@@ -1,3 +1,5 @@
+const noProductsMessage = document.getElementById('noProductsMessage');
+const clearFromMessage = document.getElementById('clearFromMessage');
 const toggleFiltersBtn = document.getElementById('toggleFilters');
 const filtersPanel = document.getElementById('filtersPanel');
 const filterBtnText = document.getElementById('filterBtnText');
@@ -71,9 +73,7 @@ function filterProducts() {
         const rating = +card.dataset.rating;
 
         const matchesSearch = searchTerm === '' || title.includes(searchTerm);
-
         const matchesPrice = price >= minVal && price <= maxVal;
-
         const matchesRating = activeRatings.length === 0 ||
             activeRatings.some(r => rating >= r);
 
@@ -85,7 +85,14 @@ function filterProducts() {
         }
     });
 
-    // Обновляем счетчик товаров
+    if (visibleCount === 0) {
+        noProductsMessage.style.display = 'block';
+        productsGrid.style.display = 'none';
+    } else {
+        noProductsMessage.style.display = 'none';
+        productsGrid.style.display = 'grid';
+    }
+
     productsCountSpan.textContent = `Showing ${visibleCount} products`;
 }
 
@@ -109,6 +116,15 @@ ratingBtns.forEach(btn => {
 searchInput.addEventListener('input', filterProducts);
 
 clearBtn.addEventListener('click', () => {
+    ratingBtns.forEach(btn => btn.classList.remove('active'));
+    minSlider.value = minSlider.min;
+    maxSlider.value = maxSlider.max;
+    searchInput.value = '';
+    updateSlider();
+    filterProducts();
+});
+
+clearFromMessage.addEventListener('click', () => {
     ratingBtns.forEach(btn => btn.classList.remove('active'));
     minSlider.value = minSlider.min;
     maxSlider.value = maxSlider.max;
@@ -148,3 +164,7 @@ updateSlider();
 filterProducts();
 
 productsCountSpan.textContent = `Showing ${document.querySelectorAll('.product-card').length} products`;
+
+window.addEventListener('load', () => {
+    productsGrid.style.display = 'grid';
+});
