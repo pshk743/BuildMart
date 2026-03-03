@@ -77,7 +77,14 @@
 }
 
 .star.filled {
-    color: #Fdc700;
+    color: #FDC700;
+}
+
+.star.half-filled {
+    background: linear-gradient(90deg, #FDC700 50%, #D1D5DB 50%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .rating-count {
