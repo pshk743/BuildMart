@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="css/filter.css">
+    <link rel="stylesheet" href="css/product.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
@@ -99,10 +100,10 @@
                 <h3>Price Range</h3>
                 <div class="price-range">
                     <div class="dual-range-slider" id="rangeTrack">
-                        <input type="range" min="0" max="400" value="0" step="1"
+                        <input type="range" min="0" max="400" value="0" step="0.01"
                                class="price-slider" id="priceMin">
 
-                        <input type="range" min="0" max="400" value="400" step="1"
+                        <input type="range" min="0" max="400" value="400" step="0.01"
                                class="price-slider" id="priceMax">
                     </div>
 
@@ -116,6 +117,15 @@
 
         <button class="clear-filters-btn">Clear All Filters</button>
     </div>
+</div>
+
+<div class="products-grid">
+
+</div>
+
+<div class="no-products-message" id="noProductsMessage" style="display: none;">
+    <h2>No products match your filters</h2>
+    <button class="no-products-message-btn" id="clearFromMessage">Clear filters</button>
 </div>
 
 <footer class="footer">
@@ -202,6 +212,30 @@
     </div>
 </footer>
 <script src="js/filter.js"></script>
-
+<script src="js/products.js"></script>
+<template id="product-card-template">
+    <div class="product-card">
+        <div class="product-image">
+            <img src="" alt="" loading="lazy">
+        </div>
+        <div class="product-info">
+            <h3 class="product-title"></h3>
+            <div class="product-rating">
+                <div class="stars"></div>
+                <span class="rating-count"></span>
+            </div>
+            <p class="product-price"></p>
+            <p class="product-category"></p>
+            <button class="add-to-cart-btn">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 3H5L6.5 11.5H13L15 5.5H6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="6.5" cy="13.5" r="1" stroke="currentColor" stroke-width="1.2"/>
+                    <circle cx="12.5" cy="13.5" r="1" stroke="currentColor" stroke-width="1.2"/>
+                </svg>
+                Add to Cart
+            </button>
+        </div>
+    </div>
+</template>
 </body>
 </html>

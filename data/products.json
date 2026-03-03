@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1,
+    "title": "Exterior Paint Set",
+    "price": 45.99,
+    "category": "Paint & Coatings",
+    "rating": 3.5,
+    "image": "img/ExteriorPaintSet.jpg",
+    "alt": "Exterior Paint Set"
+  },
+  {
+    "id": 2,
+    "title": "Plywood Sheets",
+    "price": 52.00,
+    "category": "Wood & Lumber",
+    "rating": 4.5,
+    "image": "img/PlywoodSheets.jpg",
+    "alt": "Plywood Sheets"
+  },
+  {
+    "id": 3,
+    "title": "Premium Cement Bags",
+    "price": 24.00,
+    "category": "Cement & Concrete",
+    "rating": 5.0,
+    "image": "img/PremiumCementBags.jpg",
+    "alt": "Premium Cement Bags"
+  },
+  {
+    "id": 4,
+    "title": "Premium Lumber Planks",
+    "price": 89.99,
+    "category": "Wood & Lumber",
+    "rating": 4.5,
+    "image": "img/PremiumLumberPlanks.jpg",
+    "alt": "Premium Lumber Planks"
+  },
+  {
+    "id": 5,
+    "title": "Red Clay Bricks",
+    "price": 0.89,
+    "category": "Bricks & Blocks",
+    "rating": 4.0,
+    "image": "img/RedClayBricks.jpg",
+    "alt": "Red Clay Bricks"
+  },
+  {
+    "id": 6,
+    "title": "Steel I-Beams",
+    "price": 349.99,
+    "category": "Steel & Metal",
+    "rating": 5.0,
+    "image": "img/SteelI-Beams.jpg",
+    "alt": "Steel I-Beams"
+  }
+]

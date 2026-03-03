@@ -270,3 +270,32 @@
     background-color: #FEF3F2;
     color: #D92D20;
 }
+
+.no-products-message {
+    width: 100%;
+    max-width: 1216px;
+    margin: 0 auto 32px auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.no-products-message h2 {
+    font-size: 18px;
+    color: #4A5565;
+    margin-bottom: 24px;
+    margin-left: 96px;
+}
+
+.no-products-message-btn {
+    font-size: 16px;
+    color: #F54900;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    margin-left: 164px;
+}
+
+.no-products-message-btn:hover {
+    color: #D93A00;
+}
