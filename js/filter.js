@@ -47,8 +47,8 @@ function updateSlider() {
         #030213 ${minPct}%, #030213 ${maxPct}%, 
         #E4E7EC ${maxPct}%, #E4E7EC 100%)`;
 
-    minLabel.textContent = `$${minVal}`;
-    maxLabel.textContent = `$${maxVal}`;
+    minLabel.textContent = `$${minVal.toFixed(2)}`;
+    maxLabel.textContent = `$${maxVal.toFixed(2)}`;
 }
 
 function initPriceSlider() {
@@ -61,8 +61,8 @@ function initPriceSlider() {
     minSlider.value = 0;
     maxSlider.value = maxPrice;
 
-    minLabel.textContent = `$0`;
-    maxLabel.textContent = `$${maxPrice}`;
+    minLabel.textContent = `$0.00`;
+    maxLabel.textContent = `$${maxPrice.toFixed(2)}`;
 
     updateSlider();
 }

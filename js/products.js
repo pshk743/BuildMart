@@ -29,7 +29,7 @@ class ProductRenderer {
         if (this.products.length === 0) return 400;
 
         const maxPrice = Math.max(...this.products.map(p => p.price));
-        return Math.ceil(maxPrice);
+        return maxPrice;
     }
 
     createProductCard(product) {
