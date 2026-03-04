@@ -46,11 +46,11 @@
     align-items: center;
     justify-content: center;
     color: #d1d5dc;
-    transition: background-color 0.3s ease;
+    transition: color 0.3s ease;
 }
 
 .social-link:hover {
-    background: #F54900;
+    color: #F54900;
 }
 
 .footer-links {
