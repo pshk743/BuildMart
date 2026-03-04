@@ -66,29 +66,7 @@
                     </div>
 
                     <div class="cart-items">
-                        <div class="cart-item">
-                            <div class="item-product">
-                                <div class="item-image">
-                                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect fill='%234a5f7f' width='100' height='100'/%3E%3C/svg%3E" alt="Exterior Paint Set">
-                                </div>
-                                <div class="item-info">
-                                    <h3 class="item-name">Exterior Paint Set</h3>
-                                    <p class="item-category">Paint & Coatings</p>
-                                </div>
-                            </div>
-                            <div class="item-price">$45.99</div>
-                            <div class="item-quantity">
-                                <button class="qty-btn">−</button>
-                                <span class="qty-value">1</span>
-                                <button class="qty-btn">+</button>
-                            </div>
-                            <div class="item-total">$45.99</div>
-                            <button class="delete-btn">
-                                <svg width="20" height="20" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M2 4H14M6.5 7V11M9.5 7V11M3 4L4 13C4 13.5304 4.21071 14.0391 4.58579 14.4142C4.96086 14.7893 5.46957 15 6 15H10C10.5304 15 11.0391 14.7893 11.4142 14.4142C11.7893 14.0391 12 13.5304 12 13L13 4M5.5 4V3C5.5 2.73478 5.60536 2.48043 5.79289 2.29289C5.98043 2.10536 6.23478 2 6.5 2H9.5C9.76522 2 10.0196 2.10536 10.2071 2.29289C10.3946 2.48043 10.5 2.73478 10.5 3V4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </button>
-                        </div>
+                        <!-- Cart items will be dynamically loaded here -->
                     </div>
                 </div>
 
@@ -103,27 +81,7 @@
 
             <div class="right-column">
                 <div class="order-summary">
-                    <h2 class="summary-title">Order Summary</h2>
-                    
-                    <div class="summary-row">
-                        <span class="summary-label">Subtotal</span>
-                        <span class="summary-value">$135.98</span>
-                    </div>
-                    
-                    <div class="summary-row">
-                        <span class="summary-label">Tax (8%)</span>
-                        <span class="summary-value">$10.88</span>
-                    </div>
-                    
-                    <div class="summary-divider"></div>
-                    
-                    <div class="summary-row summary-total">
-                        <span class="summary-label">Total</span>
-                        <span class="summary-value">$146.86</span>
-                    </div>
-
-                    <button class="checkout-btn">Proceed to Checkout →</button>
-                    <button class="continue-shopping-btn">Continue Shopping</button>
+                    <!-- Order summary will be dynamically loaded here -->
                 </div>
 
                 <div class="shipping-info">
@@ -244,6 +202,31 @@
         <p>&copy; 2026 BuildMart. All rights reserved.</p>
     </div>
 </footer>
+<template id="cart-item-template">
+    <div class="cart-item">
+        <div class="item-product">
+            <div class="item-image">
+                <img src="" alt="">
+            </div>
+            <div class="item-info">
+                <h3 class="item-name"></h3>
+                <p class="item-category"></p>
+            </div>
+        </div>
+        <div class="item-price"></div>
+        <div class="item-quantity">
+            <button class="qty-btn qty-decrease">−</button>
+            <span class="qty-value"></span>
+            <button class="qty-btn qty-increase">+</button>
+        </div>
+        <div class="item-total"></div>
+        <button class="delete-btn">
+            <svg width="18" height="18" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 4H14M6.5 7V11M9.5 7V11M3 4L4 13C4 13.5304 4.21071 14.0391 4.58579 14.4142C4.96086 14.7893 5.46957 15 6 15H10C10.5304 15 11.0391 14.7893 11.4142 14.4142C11.7893 14.0391 12 13.5304 12 13L13 4M5.5 4V3C5.5 2.73478 5.60536 2.48043 5.79289 2.29289C5.98043 2.10536 6.23478 2 6.5 2H9.5C9.76522 2 10.0196 2.10536 10.2071 2.29289C10.3946 2.48043 10.5 2.73478 10.5 3V4" stroke="#EF4444" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+    </div>
+</template>
 <script src="js/cart.js"></script>
 <script src="js/cart-badge.js"></script>
 </body>

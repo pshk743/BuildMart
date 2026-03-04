@@ -4,6 +4,7 @@ class CartManager {
         this.products = [];
         this.promoCode = null;
         this.discount = 0;
+        this.template = document.getElementById('cart-item-template');
     }
 
     async loadProducts() {
@@ -67,7 +68,6 @@ class CartManager {
     }
 
     applyPromoCode(code) {
-        // Если промокод уже применен, ничего не делаем
         if (this.promoCode) {
             return false;
         }
@@ -86,7 +86,6 @@ class CartManager {
             this.hidePromoHint();
             return true;
         } else {
-            // При неверном промокоде показываем подсказку
             this.showPromoHint();
             return false;
         }
@@ -134,8 +133,6 @@ class CartManager {
         setTimeout(() => {
             messageDiv.classList.add('show');
         }, 10);
-
-        // Сообщение остается и не исчезает автоматически
     }
 
     render() {
@@ -169,39 +166,24 @@ class CartManager {
     }
 
     createCartItemElement(item) {
-        const div = document.createElement('div');
-        div.className = 'cart-item';
-        div.dataset.productId = item.id;
+        const clone = this.template.content.cloneNode(true);
+        const cartItem = clone.querySelector('.cart-item');
+        
+        cartItem.dataset.productId = item.id;
         
         const itemTotal = (item.price * item.quantity).toFixed(2);
         
-        div.innerHTML = `
-            <div class="item-product">
-                <div class="item-image">
-                    <img src="${item.image}" alt="${item.title}">
-                </div>
-                <div class="item-info">
-                    <h3 class="item-name">${item.title}</h3>
-                    <p class="item-category">${item.category}</p>
-                </div>
-            </div>
-            <div class="item-price">$${item.price.toFixed(2)}</div>
-            <div class="item-quantity">
-                <button class="qty-btn qty-decrease">−</button>
-                <span class="qty-value">${item.quantity}</span>
-                <button class="qty-btn qty-increase">+</button>
-            </div>
-            <div class="item-total">$${itemTotal}</div>
-            <button class="delete-btn">
-                <svg width="18" height="18" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M2 4H14M6.5 7V11M9.5 7V11M3 4L4 13C4 13.5304 4.21071 14.0391 4.58579 14.4142C4.96086 14.7893 5.46957 15 6 15H10C10.5304 15 11.0391 14.7893 11.4142 14.4142C11.7893 14.0391 12 13.5304 12 13L13 4M5.5 4V3C5.5 2.73478 5.60536 2.48043 5.79289 2.29289C5.98043 2.10536 6.23478 2 6.5 2H9.5C9.76522 2 10.0196 2.10536 10.2071 2.29289C10.3946 2.48043 10.5 2.73478 10.5 3V4" stroke="#EF4444" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </button>
-        `;
+        clone.querySelector('.item-image img').src = item.image;
+        clone.querySelector('.item-image img').alt = item.title;
+        clone.querySelector('.item-name').textContent = item.title;
+        clone.querySelector('.item-category').textContent = item.category;
+        clone.querySelector('.item-price').textContent = `$${item.price.toFixed(2)}`;
+        clone.querySelector('.qty-value').textContent = item.quantity;
+        clone.querySelector('.item-total').textContent = `$${itemTotal}`;
 
-        const decreaseBtn = div.querySelector('.qty-decrease');
-        const increaseBtn = div.querySelector('.qty-increase');
-        const deleteBtn = div.querySelector('.delete-btn');
+        const decreaseBtn = clone.querySelector('.qty-decrease');
+        const increaseBtn = clone.querySelector('.qty-increase');
+        const deleteBtn = clone.querySelector('.delete-btn');
 
         decreaseBtn.addEventListener('click', () => {
             this.updateQuantity(item.id, item.quantity - 1);
@@ -212,16 +194,16 @@ class CartManager {
         });
 
         deleteBtn.addEventListener('click', () => {
-            div.style.transition = 'all 0.3s ease-out';
-            div.style.opacity = '0';
-            div.style.transform = 'translateX(-20px)';
+            cartItem.style.transition = 'all 0.3s ease-out';
+            cartItem.style.opacity = '0';
+            cartItem.style.transform = 'translateX(-20px)';
             
             setTimeout(() => {
                 this.removeItem(item.id);
             }, 300);
         });
 
-        return div;
+        return clone;
     }
 
     updateTotals() {
@@ -301,7 +283,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const promoInput = document.querySelector('.promo-input');
     
     if (promoBtn && promoInput) {
-        // Проверка при вводе текста
         promoInput.addEventListener('input', (e) => {
             const code = e.target.value.trim().toUpperCase();
             const validCodes = ['SAVE10'];
