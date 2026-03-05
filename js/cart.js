@@ -143,11 +143,14 @@ class CartManager {
         if (this.cart.length === 0) {
             if (cartTitle) cartTitle.style.display = 'none';
             cartContent.innerHTML = `
-                <div style="text-align: center; padding: 80px 20px; min-height: 400px; display: flex; flex-direction: column; align-items: center; justify-content: center; grid-column: 1 / -1;">
-                    <h1 style="font-size: 32px; font-weight: 700; color: #1a1a1a; margin: 0 0 12px 0;">Your Cart is Empty</h1>
+                <div style="text-align: center; padding: 20px 20px 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; grid-column: 1 / -1;">
+                    <h1 style="font-size: 30px; font-weight: 700; color: #101828; margin: 0 0 12px 0; line-height: 36px;">Your Cart is Empty</h1>
                     <p style="font-size: 16px; color: #666; margin: 0 0 32px 0;">Start shopping to add items to your cart</p>
-                    <button onclick="window.location.href='index.html'" style="padding: 14px 32px; background-color: #FF5722; color: white; border: none; border-radius: 6px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background-color 0.2s;">
-                        Browse Products →
+                    <button onclick="window.location.href='index.html'" style="padding: 14px 32px; background-color: #F54900; color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background-color 0.2s; display: flex; align-items: center; gap: 8px; font-family: 'Inter', sans-serif;">
+                        Browse Products
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
                     </button>
                 </div>
             `;
