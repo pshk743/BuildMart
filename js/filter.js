@@ -72,7 +72,7 @@ function filterProducts() {
         return;
     }
 
-    const searchTerm = searchInput.value.toLowerCase().trim();
+    const searchTerm = searchInput ? searchInput.value.toLowerCase().trim() : '';
     const minVal = +minSlider.value;
     const maxVal = +maxSlider.value;
 
@@ -107,7 +107,9 @@ ratingBtns.forEach(btn => {
     });
 });
 
-searchInput.addEventListener('input', filterProducts);
+if (searchInput) {
+    searchInput.addEventListener('input', filterProducts);
+}
 
 function clearAllFilters() {
     ratingBtns.forEach(btn => btn.classList.remove('active'));
@@ -115,7 +117,9 @@ function clearAllFilters() {
     minSlider.value = 0;
     maxSlider.value = minSlider.max;
 
-    searchInput.value = '';
+    if (searchInput) {
+        searchInput.value = '';
+    }
     updateSlider();
     filterProducts();
 }
