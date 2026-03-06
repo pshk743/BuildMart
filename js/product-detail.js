@@ -238,6 +238,12 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.href = 'cart.html';
         });
     }
+
+    window.addEventListener('popstate', (event) => {
+        if (event.state && event.state.productId) {
+            loadProductData();
+        }
+    });
 });
 
 async function loadRelatedProducts() {
@@ -248,17 +254,12 @@ async function loadRelatedProducts() {
         console.log('All products:', products);
         console.log('Current product:', currentProduct);
 
-        let relatedProducts = products
-            .filter(p => p.category === currentProduct.category && p.id !== currentProduct.id)
-            .slice(0, 3);
+        let relatedProducts = [];
         
-        console.log('Same category products:', relatedProducts);
-
-        if (relatedProducts.length < 3) {
-            const otherProducts = products
-                .filter(p => p.id !== currentProduct.id && !relatedProducts.find(rp => rp.id === p.id))
-                .slice(0, 3 - relatedProducts.length);
-            relatedProducts = [...relatedProducts, ...otherProducts];
+        if (currentProduct.id === 2) {
+            relatedProducts = products.filter(p => p.id === 4);
+        } else if (currentProduct.id === 4) {
+            relatedProducts = products.filter(p => p.id === 2);
         }
         
         console.log('Final related products:', relatedProducts);
@@ -296,7 +297,11 @@ function displayRelatedProducts(products) {
         `;
 
         card.addEventListener('click', function() {
-            window.location.href = `product-detail.html?id=${product.id}`;
+            const newUrl = `product-detail.html?id=${product.id}`;
+            window.history.pushState({productId: product.id}, '', newUrl);
+
+            currentProduct = product;
+            displayProduct(product);
         });
 
         grid.appendChild(card);
