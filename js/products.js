@@ -55,7 +55,7 @@ class ProductRenderer {
             window.location.href = `product-detail.html?id=${product.id}`;
         });
 
-        card.querySelector('.product-price').textContent = `${product.price.toFixed(2)}`;
+        card.querySelector('.product-price').textContent = `$${product.price.toFixed(2)}`;
         card.querySelector('.product-category').textContent = product.category;
         card.querySelector('.rating-count').textContent = `(${product.rating})`;
 
