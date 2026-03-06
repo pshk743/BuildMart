@@ -39,9 +39,22 @@ class ProductRenderer {
         productCard.dataset.rating = product.rating;
         productCard.dataset.productId = product.id;
 
-        card.querySelector('img').src = product.image;
-        card.querySelector('img').alt = product.alt || product.title;
-        card.querySelector('.product-title').textContent = product.title;
+        const img = card.querySelector('img');
+        img.src = product.image;
+        img.alt = product.alt || product.title;
+
+        const productImage = card.querySelector('.product-image');
+        productImage.style.cursor = 'pointer';
+        productImage.addEventListener('click', () => {
+            window.location.href = `product-detail.html?id=${product.id}`;
+        });
+        const productTitle = card.querySelector('.product-title');
+        productTitle.textContent = product.title;
+        productTitle.style.cursor = 'pointer';
+        productTitle.addEventListener('click', () => {
+            window.location.href = `product-detail.html?id=${product.id}`;
+        });
+
         card.querySelector('.product-price').textContent = `${product.price.toFixed(2)}`;
         card.querySelector('.product-category').textContent = product.category;
         card.querySelector('.rating-count').textContent = `(${product.rating})`;
