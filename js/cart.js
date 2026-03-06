@@ -154,6 +154,7 @@ class CartManager {
                     </button>
                 </div>
             `;
+            this.updateCartBadge();
             return;
         }
 
