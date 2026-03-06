@@ -3,18 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shopping Cart - BuildMart</title>
+    <title>Product Details - BuildMart</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/footer.css">
-    <link rel="stylesheet" href="css/cart.css">
     <link rel="stylesheet" href="css/cart-badge.css">
+    <link rel="stylesheet" href="css/product-detail.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-
 <header class="header">
     <div class="header-content">
         <a href="index.html" class="logo">
@@ -51,71 +50,138 @@
     </div>
 </header>
 
-<main class="shopping-cart-page">
-    <div class="cart-container">
-        <h1 class="cart-title">Shopping Cart</h1>
+<div class="breadcrumb">
+    <a href="index.html">Products</a>
+    <span>/</span>
+    <span id="breadcrumb-product" class="breadcrumb-text-current"></span>
+</div>
+
+<div class="product-detail-container">
+    <div class="product-gallery">
+        <div class="main-image-container">
+            <img id="main-image" class="main-image" src="" alt="">
+            <button class="gallery-nav prev" onclick="changeImage(-1)">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+            </button>
+            <button class="gallery-nav next" onclick="changeImage(1)">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </button>
+        </div>
+        <div class="thumbnail-container" id="thumbnail-container">
+        </div>
+    </div>
+
+    <div class="product-info-detail">
+        <h1 class="product-title-detail" id="product-title"></h1>
         
-        <div class="cart-content">
-            <div class="cart-items-section">
-                <div class="cart-table-card">
-                    <div class="cart-table-header">
-                        <div class="header-product">Product</div>
-                        <div class="header-price">Price</div>
-                        <div class="header-quantity">Quantity</div>
-                        <div class="header-total">Total</div>
-                    </div>
+        <div class="rating-detail">
+            <div class="stars-detail" id="product-stars"></div>
+            <span class="rating-count-detail" id="product-rating"></span>
+        </div>
+        
+        <div class="price-detail">
+            <span id="product-price"></span>
+            <span class="price-unit">/unit</span>
+        </div>
 
-                    <div class="cart-items">
-                    </div>
-                </div>
+        <div class="features-grid">
 
-                <div class="promo-section">
-                    <h3 class="promo-title">Have a promo code?</h3>
-                    <div class="promo-form">
-                        <input type="text" placeholder="Enter promo code" class="promo-input">
-                        <button class="promo-btn">Apply</button>
-                    </div>
+            <div class="feature-item">
+                <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                    <polyline points="3.3 7 12 12 20.7 7"></polyline>
+                    <line x1="12" y1="22" x2="12" y2="12"></line>
+                </svg>
+
+                <div class="feature-text">
+                    <div class="feature-title">Quality Assured</div>
+                    <div class="feature-desc">Premium grade material</div>
                 </div>
             </div>
 
-            <div class="right-column">
-                <div class="order-summary">
+
+            <div class="feature-item">
+                <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <rect x="1" y="3" width="15" height="13"></rect>
+                    <polygon points="16 8 20 8 23 11 23 16 16 16"></polygon>
+                    <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                    <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                </svg>
+
+                <div class="feature-text">
+                    <div class="feature-title">Fast Delivery</div>
+                    <div class="feature-desc">2-5 business days</div>
                 </div>
+            </div>
 
-                <div class="shipping-info">
-                    <h3 class="shipping-title">Shipping Information</h3>
-                    
-                    <div class="shipping-item">
-                        <div class="shipping-icon calendar-icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="3" y="6" width="18" height="15" rx="2" stroke="#FF5722" stroke-width="2" fill="none"/>
-                                <path d="M3 10h18" stroke="#FF5722" stroke-width="2"/>
-                                <path d="M8 3v4M16 3v4" stroke="#FF5722" stroke-width="2" stroke-linecap="round"/>
-                            </svg>
-                        </div>
-                        <div class="shipping-details">
-                            <p class="shipping-label">Estimated Delivery</p>
-                            <p class="shipping-value">3-5 business days</p>
-                        </div>
-                    </div>
 
-                    <div class="shipping-item">
-                        <div class="shipping-icon location-icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0116 0z" stroke="#FF5722" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <circle cx="12" cy="10" r="3" stroke="#FF5722" stroke-width="2"/>
-                            </svg>
-                        </div>
-                        <div class="shipping-details">
-                            <p class="shipping-label">Shipping Address</p>
-                            <p class="shipping-value">123 Construction Ave<br>Builder City, BC 12345<br>United States</p>
-                        </div>
-                    </div>
+            <div class="feature-item">
+                <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M12 2l7 4v6c0 5-3.5 9-7 10-3.5-1-7-5-7-10V6l7-4z"></path>
+                </svg>
+
+                <div class="feature-text">
+                    <div class="feature-title">Warranty</div>
+                    <div class="feature-desc">30-day guarantee</div>
+                </div>
+            </div>
+
+        </div>
+        
+        <div class="quantity-section">
+            <div class="quantity-label">Quantity</div>
+            <div class="quantity-controls">
+                <button class="quantity-btn" onclick="decreaseQuantity()">-</button>
+                <input type="number" id="quantity-input" class="quantity-input" value="1" min="1">
+                <button class="quantity-btn" onclick="increaseQuantity()">+</button>
+            </div>
+        </div>
+        
+        <div class="action-buttons">
+            <button class="btn-add-to-cart" onclick="addToCart()">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 3H5L6.5 11.5H16L18 5.5H6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="6.5" cy="13.5" r="1" stroke="currentColor" stroke-width="1.5"/>
+                    <circle cx="15.5" cy="13.5" r="1" stroke="currentColor" stroke-width="1.5"/>
+                </svg>
+                Add to Cart
+            </button>
+            <button class="btn-buy-now">Buy Now</button>
+        </div>
+        
+        <div class="description-section">
+            <h2 class="section-title">Description</h2>
+            <p class="description-text" id="product-description"></p>
+        </div>
+        
+        <div class="specs-section">
+            <div class="specs-header" onclick="toggleSpecs()">
+                <h2 class="specs-section-title">Technical Specifications</h2>
+                <svg class="specs-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </div>
+            <div class="specs-content" id="specs-content">
+                <div class="specs-grid" id="specs-grid">
+                    <!-- Specifications will be loaded here -->
                 </div>
             </div>
         </div>
     </div>
-</main>
+</div>
+
+<div class="related-products-section">
+    <div class="related-products-container">
+        <h2 class="related-title">Related Products</h2>
+        <div class="related-products-grid" id="related-products-grid">
+            <!-- Related products will be loaded here -->
+        </div>
+    </div>
+</div>
 
 <footer class="footer">
     <div class="footer-content">
@@ -204,32 +270,8 @@
         <p>&copy; 2026 BuildMart. All rights reserved.</p>
     </div>
 </footer>
-<template id="cart-item-template">
-    <div class="cart-item">
-        <div class="item-product">
-            <div class="item-image">
-                <img src="" alt="">
-            </div>
-            <div class="item-info">
-                <h3 class="item-name"></h3>
-                <p class="item-category"></p>
-            </div>
-        </div>
-        <div class="item-price"></div>
-        <div class="item-quantity">
-            <button class="qty-btn qty-decrease">−</button>
-            <span class="qty-value"></span>
-            <button class="qty-btn qty-increase">+</button>
-        </div>
-        <div class="item-total"></div>
-        <button class="delete-btn">
-            <svg width="18" height="18" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M2 4H14M6.5 7V11M9.5 7V11M3 4L4 13C4 13.5304 4.21071 14.0391 4.58579 14.4142C4.96086 14.7893 5.46957 15 6 15H10C10.5304 15 11.0391 14.7893 11.4142 14.4142C11.7893 14.0391 12 13.5304 12 13L13 4M5.5 4V3C5.5 2.73478 5.60536 2.48043 5.79289 2.29289C5.98043 2.10536 6.23478 2 6.5 2H9.5C9.76522 2 10.0196 2.10536 10.2071 2.29289C10.3946 2.48043 10.5 2.73478 10.5 3V4" stroke="#EF4444" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-        </button>
-    </div>
-</template>
-<script src="js/cart.js"></script>
+
 <script src="js/cart-badge.js"></script>
+<script src="js/product-detail.js"></script>
 </body>
 </html>
