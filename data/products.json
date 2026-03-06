@@ -15,8 +15,7 @@
       "Finish": "Satin",
       "Dry Time": "2-4 hours",
       "Colors": "Assorted neutral tones"
-    },
-    "relatedImage": "img/ExteriorPaintSet.jpg"
+    }
   },
   {
     "id": 2,
@@ -34,8 +33,7 @@
       "Plies": "7-ply construction",
       "Exposure": "Exterior grade",
       "Veneer": "Softwood"
-    },
-    "relatedImage": "img/PlywoodSheets.jpg"
+    }
   },
   {
     "id": 3,
@@ -53,8 +51,7 @@
       "Setting Time": "2-4 hours initial set",
       "Coverage": "Approximately 0.45 cubic feet",
       "Storage Life": "6 months in sealed bag"
-    },
-    "relatedImage": "img/PremiumCementBags.jpg"
+    }
   },
   {
     "id": 4,
@@ -72,8 +69,7 @@
       "Moisture Content": "15% kiln-dried",
       "Treatment": "Pressure-treated option available",
       "Quantity": "Sold individually"
-    },
-    "relatedImage": "img/PremiumLumberPlanks.jpg"
+    }
   },
   {
     "id": 5,
@@ -91,8 +87,7 @@
       "Water Absorption": "Less than 8%",
       "Color": "Classic red",
       "Weight": "4.5 lbs per brick"
-    },
-    "relatedImage": "img/RedClayBricks.jpg"
+    }
   },
   {
     "id": 6,
@@ -110,7 +105,6 @@
       "Weight": "980 lbs",
       "Yield Strength": "50 ksi",
       "Finish": "Mill finish"
-    },
-    "relatedImage": "img/SteelI-Beams.jpg"
+    }
   }
 ]
