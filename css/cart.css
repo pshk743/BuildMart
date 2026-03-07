@@ -402,3 +402,141 @@
     color: green;
     font-weight: 400;
 }
+
+@media (max-width: 1280px) {
+    .shopping-cart-page {
+        padding: 32px 32px;
+    }
+
+    .cart-container {
+        max-width: 100%;
+    }
+
+    .cart-content {
+        grid-template-columns: 1fr 350px;
+        gap: 24px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .shopping-cart-page {
+        padding: 24px;
+    }
+
+    .cart-content {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .order-summary {
+        position: static;
+    }
+}
+
+@media (max-width: 768px) {
+    .shopping-cart-page {
+        padding: 20px;
+    }
+
+    .cart-title {
+        font-size: 28px;
+        margin-bottom: 24px;
+    }
+
+    .cart-table-header {
+        display: none;
+    }
+
+    .cart-item {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding: 16px;
+    }
+
+    .item-product {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .item-image {
+        width: 100%;
+        height: 200px;
+    }
+
+    .item-info {
+        height: auto;
+    }
+
+    .item-price,
+    .item-total {
+        text-align: left;
+    }
+
+    .item-quantity {
+        width: fit-content;
+    }
+
+    .delete-btn {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+    }
+
+    .cart-item {
+        position: relative;
+    }
+
+    .promo-section {
+        padding: 20px;
+    }
+
+    .promo-form {
+        flex-direction: column;
+        height: auto;
+        gap: 8px;
+    }
+
+    .promo-input,
+    .promo-btn {
+        height: 42px;
+    }
+
+    .order-summary {
+        padding: 20px;
+    }
+
+    .shipping-info {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 375px) {
+    .shopping-cart-page {
+        padding: 16px;
+    }
+
+    .cart-title {
+        font-size: 24px;
+    }
+
+    .cart-item {
+        padding: 12px;
+    }
+
+    .item-image {
+        height: 180px;
+    }
+
+    .item-name {
+        font-size: 14px;
+    }
+
+    .promo-section {
+        padding: 16px;
+    }
+
+    .order-summary,
+    .shipping-info {
+        padding: 16px;
+    }
+}

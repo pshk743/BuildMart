@@ -173,7 +173,7 @@
     height: 16px;
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 4px;
-    background-color: #ffffff;
+    background-color: #F3F4F6;
     flex-shrink: 0;
     transition: all 0.3s;
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
@@ -298,4 +298,146 @@
 
 .no-products-message-btn:hover {
     color: #D93A00;
+}
+
+@media (max-width: 1280px) {
+    .filter-section-text,
+    .filter-section,
+    .no-products-message {
+        max-width: 100%;
+        padding-left: 32px;
+        padding-right: 32px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .filter-section-text,
+    .filter-section,
+    .no-products-message {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+
+    .filter-section-text h3 {
+        font-size: 32px;
+    }
+
+    .filters-content-section {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .filters-panel {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .clear-filters-btn {
+        width: 100%;
+        margin-top: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    .filter-section-text,
+    .filter-section,
+    .no-products-message {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .filter-section-text {
+        padding-top: 24px;
+        padding-bottom: 24px;
+    }
+
+    .filter-section-text h3 {
+        font-size: 28px;
+    }
+
+    .filter-section-text p {
+        font-size: 14px;
+    }
+
+    .filters-bar {
+        flex-direction: column;
+        gap: 16px;
+        align-items: stretch;
+    }
+
+    .filters-left {
+        width: 100%;
+        justify-content: flex-start;
+        gap: 16px;
+    }
+
+    .filters-right {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .sort-select {
+        flex: 1;
+        min-width: auto;
+    }
+
+    .filters-panel {
+        padding: 20px;
+    }
+
+    .rating-buttons {
+        flex-direction: row;
+        gap: 16px;
+        flex-wrap: wrap;
+    }
+
+    .clear-filters-btn {
+        width: auto;
+        min-width: 150px;
+        align-self: flex-start;
+        padding: 8px 14px;
+        font-size: 13px;
+        height: 34px;
+    }
+
+    .no-products-message h2 {
+        margin-left: 0;
+        text-align: center;
+    }
+
+    .no-products-message-btn {
+        margin-left: 0;
+        text-align: center;
+    }
+}
+
+@media (max-width: 375px) {
+    .filter-section-text,
+    .filter-section,
+    .no-products-message {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .filter-section-text h3 {
+        font-size: 24px;
+    }
+
+    .filters-btn {
+        font-size: 14px;
+        padding: 11px 12px;
+    }
+
+    .products-count {
+        font-size: 14px;
+    }
+
+    .sort-label {
+        font-size: 12px;
+    }
+
+    .sort-select {
+        font-size: 14px;
+        padding: 9px 32px 9px 12px;
+    }
 }

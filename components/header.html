@@ -14,22 +14,56 @@
 
         <div class="search-wrapper">
             <div class="search-container">
-                    <span class="search-icon">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M7.25 12.5C10.1495 12.5 12.5 10.1495 12.5 7.25C12.5 4.3505 10.1495 2 7.25 2C4.3505 2 2 4.3505 2 7.25C2 10.1495 4.3505 12.5 7.25 12.5Z" stroke="#6F7D8E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M14 14L11 11" stroke="#6F7D8E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </span>
+                <span class="search-icon">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7.25 12.5C10.1495 12.5 12.5 10.1495 12.5 7.25C12.5 4.3505 10.1495 2 7.25 2C4.3505 2 2 4.3505 2 7.25C2 10.1495 4.3505 12.5 7.25 12.5Z" stroke="#6F7D8E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M14 14L11 11" stroke="#6F7D8E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </span>
                 <input type="text" placeholder="Search products..." class="search-input">
             </div>
         </div>
 
-        <button class="cart-btn" onclick="window.location.href='cart.html'">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M6.5 16.5C7.32843 16.5 8 15.8284 8 15C8 14.1716 7.32843 13.5 6.5 13.5C5.67157 13.5 5 14.1716 5 15C5 15.8284 5.67157 16.5 6.5 16.5Z" fill="#2F3E4E"/>
-                <path d="M15.5 16.5C16.3284 16.5 17 15.8284 17 15C17 14.1716 16.3284 13.5 15.5 13.5C14.6716 13.5 14 14.1716 14 15C14 15.8284 14.6716 16.5 15.5 16.5Z" fill="#2F3E4E"/>
-                <path d="M3 3H5L6.5 11.5H16L18 5.5H6" stroke="#2F3E4E" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-        </button>
+        <div class="header-actions">
+            <button class="search-btn-mobile" id="searchBtnMobile">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9.0625 15.625C12.6869 15.625 15.625 12.6869 15.625 9.0625C15.625 5.43813 12.6869 2.5 9.0625 2.5C5.43813 2.5 2.5 5.43813 2.5 9.0625C2.5 12.6869 5.43813 15.625 9.0625 15.625Z" stroke="#6F7D8E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M17.5 17.5L13.75 13.75" stroke="#6F7D8E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+
+            <button class="cart-btn" onclick="window.location.href='cart.html'">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6.5 16.5C7.32843 16.5 8 15.8284 8 15C8 14.1716 7.32843 13.5 6.5 13.5C5.67157 13.5 5 14.1716 5 15C5 15.8284 5.67157 16.5 6.5 16.5Z" fill="#2F3E4E"/>
+                    <path d="M15.5 16.5C16.3284 16.5 17 15.8284 17 15C17 14.1716 16.3284 13.5 15.5 13.5C14.6716 13.5 14 14.1716 14 15C14 15.8284 14.6716 16.5 15.5 16.5Z" fill="#2F3E4E"/>
+                    <path d="M3 3H5L6.5 11.5H16L18 5.5H6" stroke="#2F3E4E" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+
+            <button class="burger-btn" id="burgerBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </div>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-search">
+            <span class="search-icon">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7.25 12.5C10.1495 12.5 12.5 10.1495 12.5 7.25C12.5 4.3505 10.1495 2 7.25 2C4.3505 2 2 4.3505 2 7.25C2 10.1495 4.3505 12.5 7.25 12.5Z" stroke="#6F7D8E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M14 14L11 11" stroke="#6F7D8E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
+            <input type="text" placeholder="Search products..." class="search-input">
+        </div>
+
+        <nav class="mobile-nav">
+            <a href="index.html" class="mobile-nav-link">Products</a>
+            <a href="#" class="mobile-nav-link">Categories</a>
+            <a href="#" class="mobile-nav-link">Deals</a>
+            <a href="#" class="mobile-nav-link">About</a>
+        </nav>
     </div>
 </header>
