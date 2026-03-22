@@ -6,6 +6,7 @@
     <title>Shopping Cart - BuildMart</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/mobile-menu.css">
     <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="css/cart.css">
     <link rel="stylesheet" href="css/cart-badge.css">
@@ -15,6 +16,27 @@
 </head>
 <body>
 <div id="header-placeholder"></div>
+
+<div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-search">
+        <div class="search-container">
+                <span class="search-icon">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7.25 12.5C10.1495 12.5 12.5 10.1495 12.5 7.25C12.5 4.3505 10.1495 2 7.25 2C4.3505 2 2 4.3505 2 7.25C2 10.1495 4.3505 12.5 7.25 12.5Z" stroke="#6F7D8E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M14 14L11 11" stroke="#6F7D8E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </span>
+            <input type="text" placeholder="Search products..." class="search-input">
+        </div>
+    </div>
+
+    <nav class="mobile-nav">
+        <a href="index.html" class="nav-link mobile-nav-link active">Products</a>
+        <a href="#" class="nav-link mobile-nav-link">Categories</a>
+        <a href="#" class="nav-link mobile-nav-link">Deals</a>
+        <a href="#" class="nav-link mobile-nav-link">About</a>
+    </nav>
+</div>
 
 <main class="shopping-cart-page">
     <div class="cart-container">
@@ -84,6 +106,7 @@
 
 <div id="footer-placeholder"></div>
 <script src="js/components.js"></script>
+<script src="js/mobile-menu.js"></script>
 <template id="cart-item-template">
     <div class="cart-item">
         <div class="item-product">

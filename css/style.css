@@ -5,6 +5,7 @@
 }
 
 body {
+    padding-top: 81px;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     background-color: #ffffff;
     min-height: 100vh;
