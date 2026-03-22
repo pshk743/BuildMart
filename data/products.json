@@ -1,0 +1,110 @@
+[
+  {
+    "id": 1,
+    "title": "Exterior Paint Set",
+    "price": 45.99,
+    "category": "Paint & Coatings",
+    "rating": 3.5,
+    "image": "img/ExteriorPaintSet.jpg",
+    "alt": "Exterior Paint Set",
+    "description": "Professional-grade exterior paint set designed to withstand harsh weather conditions. This premium paint offers excellent coverage, durability, and color retention. Perfect for residential and commercial exterior surfaces.",
+    "specifications": {
+      "Volume": "5 gallons total",
+      "Type": "100% Acrylic Latex",
+      "Coverage": "400 sq ft per gallon",
+      "Finish": "Satin",
+      "Dry Time": "2-4 hours",
+      "Colors": "Assorted neutral tones"
+    }
+  },
+  {
+    "id": 2,
+    "title": "Plywood Sheets",
+    "price": 52.00,
+    "category": "Wood & Lumber",
+    "rating": 4.5,
+    "image": "img/PlywoodSheets.jpg",
+    "alt": "Plywood Sheets",
+    "description": "Versatile construction-grade plywood sheets suitable for a wide range of applications. These sheets are engineered for strength and dimensional stability, perfect for subfloors, roofing, walls, and general construction.",
+    "specifications": {
+      "Dimensions": "4' x 8'",
+      "Thickness": "3/4 inch",
+      "Grade": "CDX",
+      "Plies": "7-ply construction",
+      "Exposure": "Exterior grade",
+      "Veneer": "Softwood"
+    }
+  },
+  {
+    "id": 3,
+    "title": "Premium Cement Bags",
+    "price": 24.00,
+    "category": "Cement & Concrete",
+    "rating": 5.0,
+    "image": "img/PremiumCementBags.jpg",
+    "alt": "Premium Cement Bags",
+    "description": "High-quality Portland cement bags designed for heavy-duty construction projects. Our premium cement offers exceptional strength, durability, and workability. Ideal for foundations, structural work, and general concrete applications. Each bag contains precisely measured and tested cement that meets international quality standards.",
+    "specifications": {
+      "Weight": "50 lbs per bag",
+      "Type": "Portland Cement Type I/II",
+      "Compressive Strength": "3500 PSI at 28 days",
+      "Setting Time": "2-4 hours initial set",
+      "Coverage": "Approximately 0.45 cubic feet",
+      "Storage Life": "6 months in sealed bag"
+    }
+  },
+  {
+    "id": 4,
+    "title": "Premium Lumber Planks",
+    "price": 89.99,
+    "category": "Wood & Lumber",
+    "rating": 4.5,
+    "image": "img/PremiumLumberPlanks.jpg",
+    "alt": "Premium Lumber Planks",
+    "description": "Premium kiln-dried lumber planks perfect for all your woodworking and construction needs. These high-grade wooden planks are carefully selected for strength and appearance. Suitable for framing, decking, furniture making, and various carpentry projects.",
+    "specifications": {
+      "Dimensions": "2\" x 6\" x 8'",
+      "Wood Type": "Douglas Fir",
+      "Grade": "Premium Select",
+      "Moisture Content": "15% kiln-dried",
+      "Treatment": "Pressure-treated option available",
+      "Quantity": "Sold individually"
+    }
+  },
+  {
+    "id": 5,
+    "title": "Red Clay Bricks",
+    "price": 0.89,
+    "category": "Bricks & Blocks",
+    "rating": 4.0,
+    "image": "img/RedClayBricks.jpg",
+    "alt": "Red Clay Bricks",
+    "description": "Traditional red clay bricks manufactured to the highest standards. These durable bricks are perfect for walls, patios, pathways, and architectural features. Fire-hardened for exceptional strength and weather resistance.",
+    "specifications": {
+      "Dimensions": "8\" x 4\" x 2.25\"",
+      "Material": "Fire-hardened clay",
+      "Compressive Strength": "3000+ PSI",
+      "Water Absorption": "Less than 8%",
+      "Color": "Classic red",
+      "Weight": "4.5 lbs per brick"
+    }
+  },
+  {
+    "id": 6,
+    "title": "Steel I-Beams",
+    "price": 349.99,
+    "category": "Steel & Metal",
+    "rating": 5.0,
+    "image": "img/SteelI-Beams.jpg",
+    "alt": "Steel I-Beams",
+    "description": "Heavy-duty structural steel I-beams engineered for maximum load-bearing capacity. These professional-grade beams are essential for large construction projects, building frames, and structural support applications.",
+    "specifications": {
+      "Length": "20 feet",
+      "Profile": "W10x49",
+      "Material": "ASTM A992 Grade 50 Steel",
+      "Weight": "980 lbs",
+      "Yield Strength": "50 ksi",
+      "Finish": "Mill finish"
+    }
+  }
+]

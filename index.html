@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BuildMart</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/mobile-menu.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/filter.css">
+    <link rel="stylesheet" href="css/product.css">
+    <link rel="stylesheet" href="css/cart-badge.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div id="header-placeholder"></div>
+
+<div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-search">
+        <div class="search-container">
+                <span class="search-icon">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7.25 12.5C10.1495 12.5 12.5 10.1495 12.5 7.25C12.5 4.3505 10.1495 2 7.25 2C4.3505 2 2 4.3505 2 7.25C2 10.1495 4.3505 12.5 7.25 12.5Z" stroke="#6F7D8E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M14 14L11 11" stroke="#6F7D8E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </span>
+            <input type="text" placeholder="Search products..." class="search-input">
+        </div>
+    </div>
+
+    <nav class="mobile-nav">
+        <a href="index.html" class="nav-link mobile-nav-link active">Products</a>
+        <a href="#" class="nav-link mobile-nav-link">Categories</a>
+        <a href="#" class="nav-link mobile-nav-link">Deals</a>
+        <a href="#" class="nav-link mobile-nav-link">About</a>
+    </nav>
+</div>
+
+<div class="filter-section-text">
+    <h3>Building Materials</h3>
+    <p>Premium construction supplies for all your projects</p>
+</div>
+
+<div class="filter-section">
+    <div class="filters-bar">
+    <div class="filters-left">
+        <button class="filters-btn" id="toggleFilters">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 4H10" stroke="#2F3E4E" stroke-width="1.2" stroke-linecap="round"/>
+                <path d="M14 4H16" stroke="#2F3E4E" stroke-width="1.2" stroke-linecap="round"/>
+                <path d="M13 2.5V5.5" stroke="#2F3E4E" stroke-width="1.5" stroke-linecap="round"/>
+
+                <path d="M2 9H5.5" stroke="#2F3E4E" stroke-width="1.2" stroke-linecap="round"/>
+                <path d="M8.5 9H16" stroke="#2F3E4E" stroke-width="1.2" stroke-linecap="round"/>
+                <path d="M6 7.5V10.5" stroke="#2F3E4E" stroke-width="1.5" stroke-linecap="round"/>
+
+                <path d="M2 14H10" stroke="#2F3E4E" stroke-width="1.2" stroke-linecap="round"/>
+                <path d="M14 14H16" stroke="#2F3E4E" stroke-width="1.2" stroke-linecap="round"/>
+                <path d="M13 12.5V15.5" stroke="#2F3E4E" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <span id="filterBtnText">Show Filters</span>
+        </button>
+        <span class="products-count">Showing 6 products</span>
+    </div>
+    <div class="filters-right">
+        <span class="sort-label">Sort by:</span>
+        <select class="sort-select">
+            <option>Name (A-Z)</option>
+            <option>Price (Low to High)</option>
+            <option>Price (High to Low)</option>
+        </select>
+    </div>
+</div>
+    <div class="filters-panel hidden" id="filtersPanel">
+        <div class="filters-content-section">
+            <div class="filter-group">
+                <h3>Minimum Rating</h3>
+                <div class="rating-buttons">
+                    <button class="rating-btn">5+ Stars</button>
+                    <button class="rating-btn">4+ Stars</button>
+                    <button class="rating-btn">3+ Stars</button>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <h3>Price Range</h3>
+                <div class="price-range">
+                    <div class="dual-range-slider" id="rangeTrack">
+                        <input type="range" min="0" max="400" value="0" step="0.01"
+                               class="price-slider" id="priceMin">
+
+                        <input type="range" min="0" max="400" value="400" step="0.01"
+                               class="price-slider" id="priceMax">
+                    </div>
+
+                    <div class="price-labels">
+                        <span class="price-label" id="minLabel">$0</span>
+                        <span class="price-label" id="maxLabel">$400</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button class="clear-filters-btn">Clear All Filters</button>
+    </div>
+</div>
+
+<div class="products-grid">
+
+</div>
+
+<div class="no-products-message" id="noProductsMessage" style="display: none;">
+    <h2>No products match your filters</h2>
+    <button class="no-products-message-btn" id="clearFromMessage">Clear filters</button>
+</div>
+
+<div id="footer-placeholder"></div>
+<script src="js/components.js"></script>
+<script src="js/mobile-menu.js"></script>
+<script src="js/filter.js"></script>
+<script src="js/products.js"></script>
+<script src="js/cart-badge.js"></script>
+<template id="product-card-template">
+    <div class="product-card">
+        <div class="product-image">
+            <img src="" alt="" loading="lazy">
+        </div>
+        <div class="product-info">
+            <h3 class="product-title"></h3>
+            <div class="product-rating">
+                <div class="stars"></div>
+                <span class="rating-count"></span>
+            </div>
+            <p class="product-price"></p>
+            <p class="product-category"></p>
+            <button class="add-to-cart-btn">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 3H5L6.5 11.5H13L15 5.5H6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="6.5" cy="13.5" r="1" stroke="currentColor" stroke-width="1.2"/>
+                    <circle cx="12.5" cy="13.5" r="1" stroke="currentColor" stroke-width="1.2"/>
+                </svg>
+                Add to Cart
+            </button>
+        </div>
+    </div>
+</template>
+</body>
+</html>

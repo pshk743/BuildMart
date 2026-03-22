@@ -1,0 +1,262 @@
+.header {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.header-content {
+    max-width: 1216px;
+    margin: 0 auto;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.logo-box {
+    width: 40px;
+    height: 40px;
+    background-color: #F54900;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.logo-text {
+    font-weight: 700;
+    font-size: 20px;
+    color: #101828;
+    white-space: nowrap;
+}
+
+.nav {
+    display: flex;
+    gap: 32px;
+    flex-shrink: 0;
+}
+
+.nav-link {
+    font-size: 16px;
+    color: #364153;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: font-size 0.2s ease;
+}
+
+.nav-link.active {
+    color: #3a3a3a;
+}
+
+.nav-link:hover {
+    color: #F54900;
+}
+
+.search-wrapper {
+    flex: 1;
+    min-width: 0;
+    max-width: 448px;
+}
+
+.search-container {
+    width: 100%;
+    height: 42px;
+    border-radius: 10px;
+    display: flex;
+    padding: 11px 12px;
+    align-items: center;
+    border: 1px solid #d1d5dc;
+    transition: all 0.2s ease;
+}
+
+.search-container:focus-within {
+    border: 2px solid #F54900;
+    padding: 10px 11px;
+}
+
+.search-icon {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    margin-right: 6px;
+    flex-shrink: 0;
+}
+
+.search-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 16px;
+    margin: 0;
+    min-width: 0;
+    width: 100%;
+}
+
+.search-input::placeholder {
+    color: #9ca3af;
+}
+
+.cart-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 25px;
+    height: 25px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.cart-btn svg {
+    width: 25px;
+    height: 25px;
+}
+
+.cart-btn:hover svg path:nth-child(1),
+.cart-btn:hover svg path:nth-child(2) {
+    fill: #F54900;
+}
+
+.cart-btn:hover svg path:nth-child(3) {
+    stroke: #F54900;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-shrink: 0;
+}
+
+@media (max-width: 1280px) {
+    .header-content {
+        max-width: 100%;
+        padding: 0 32px;
+        gap: 16px;
+    }
+
+    .search-wrapper {
+        max-width: 350px;
+    }
+
+    .nav {
+        gap: 24px;
+    }
+
+    .nav-link {
+        font-size: 15px;
+    }
+
+    .logo-text {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .header-content {
+        padding: 0 24px;
+        gap: 16px;
+    }
+
+    .search-wrapper {
+        max-width: 280px;
+    }
+
+    .nav {
+        gap: 20px;
+    }
+
+    .nav-link {
+        font-size: 14px;
+    }
+
+    .logo-text {
+        font-size: 16px;
+    }
+
+    .logo-box {
+        width: 36px;
+        height: 36px;
+        font-size: 18px;
+    }
+
+    .search-container {
+        height: 38px;
+        padding: 9px 12px;
+    }
+
+    .search-input {
+        font-size: 14px;
+    }
+
+    .search-icon {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-content {
+        padding: 0 20px;
+        min-height: 64px;
+        gap: 12px;
+    }
+
+    .logo-box {
+        width: 32px;
+        height: 32px;
+        font-size: 16px;
+        border-radius: 8px;
+    }
+
+    .logo-text {
+        display: none;
+    }
+
+    .nav {
+        display: none;
+    }
+
+    .search-wrapper {
+        display: none;
+    }
+
+    .search-btn-mobile {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .header-actions {
+        gap: 16px;
+    }
+
+    .cart-btn {
+        width: 25px;
+        height: 25px;
+    }
+
+    .cart-btn svg {
+        width: 25px;
+        height: 25px;
+    }
+}
