@@ -9,6 +9,10 @@ class CartBadgeManager {
         window.addEventListener('storage', () => {
             this.updateBadge();
         });
+
+        document.addEventListener('cartUpdated', () => {
+            this.updateBadge();
+        });
     }
 
     updateBadge() {
@@ -35,8 +39,6 @@ class CartBadgeManager {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    new CartBadgeManager();
-
     const cartBtn = document.querySelector('.cart-btn');
     if (cartBtn) {
         cartBtn.addEventListener('click', () => {
