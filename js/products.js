@@ -110,6 +110,8 @@ class ProductRenderer {
         } else if (badge) {
             badge.remove();
         }
+
+        document.dispatchEvent(new Event('cartUpdated'));
     }
 
     showAddedNotification(productTitle) {
