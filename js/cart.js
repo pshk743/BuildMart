@@ -207,6 +207,18 @@ class CartManager {
             }, 300);
         });
 
+        const itemName = clone.querySelector('.item-name');
+        itemName.style.cursor = 'pointer';
+        itemName.addEventListener('click', () => {
+            window.location.href = `product-detail.html?id=${item.id}`;
+        });
+
+        const itemImage = clone.querySelector('.item-image');
+        itemImage.style.cursor = 'pointer';
+        itemImage.addEventListener('click', () => {
+            window.location.href = `product-detail.html?id=${item.id}`;
+        });
+
         return clone;
     }
 
