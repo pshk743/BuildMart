@@ -416,32 +416,48 @@
         padding: 32px 32px;
     }
 
-    .cart-container {
-        max-width: 100%;
+    .cart-content {
+        gap: 28px;
     }
 
-    .cart-content {
-        grid-template-columns: 1fr 350px;
-        gap: 24px;
+    .cart-title {
+        font-size: 32px;
     }
 }
 
 @media (max-width: 1024px) {
     .shopping-cart-page {
-        padding: 24px;
+        padding: 28px 24px;
     }
 
     .cart-content {
         grid-template-columns: 1fr;
-        gap: 24px;
+        gap: 32px;
     }
 
     .order-summary {
         position: static;
     }
+
+    .cart-title {
+        font-size: 30px;
+        margin-bottom: 24px;
+    }
 }
 
 @media (max-width: 768px) {
+    .shopping-cart-page {
+        padding: 20px 20px;
+    }
+
+    .cart-title {
+        font-size: 26px;
+        margin-bottom: 20px;
+    }
+
+    .cart-content {
+        gap: 24px;
+    }
 
     .cart-table-header {
         display: none;
@@ -450,10 +466,9 @@
     .cart-item {
         display: flex;
         flex-direction: column;
-        gap: 12px;
-        padding: 16px;
+        gap: 16px;
+        padding: 20px;
         align-items: flex-start;
-        text-align: left;
     }
 
     .item-product { order: 1; }
@@ -463,92 +478,69 @@
     .item-total   { order: 5; }
 
     .item-product {
-        display: flex;
-        gap: 12px;
-        align-items: flex-start;
-    }
-
-    .item-product {
-        flex-wrap: wrap;
+        width: 100%;
+        gap: 16px;
     }
 
     .item-image {
-        width: 80px;
-        height: 80px;
-        border-radius: 10px;
-        overflow: hidden;
+        width: 88px;
+        height: 88px;
         flex-shrink: 0;
-        cursor: pointer;
-    }
-
-    .item-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
     }
 
     .item-info {
-        display: flex;
-        flex-direction: column;
-        width: calc(100% - 92px);
+        flex: 1;
+        width: calc(100% - 104px);
     }
 
     .item-name {
         font-size: 16px;
-        font-weight: 600;
-        margin: 0;
-    }
-
-    .item-category {
-        font-size: 14px;
-        color: #6B7280;
-        margin: 0;
     }
 
     .delete-btn {
-        gap: 6px;
-        margin-left: 92px;
-        margin-top: -50px;
+        margin-left: auto;
+        margin-top: -8px;
     }
 
     .delete-btn::after {
         content: "Remove";
+        margin-left: 6px;
+        font-size: 14px;
     }
 
     .item-price::before {
         content: "Price: ";
+        font-weight: 500;
         color: #364153;
-        font-weight: lighter;
-    }
-
-    .item-quantity {
-        border: 1px solid #E5E7EB;
-        border-radius: 8px;
-        overflow: hidden;
     }
 
     .item-total {
         display: flex;
         justify-content: space-between;
         width: 100%;
+        font-size: 18px;
     }
 
     .item-total::before {
-        content: "Total:";
-        font-weight: 400;
+        content: "Total: ";
+        font-weight: 500;
         color: #364153;
-        font-size: 16px;
     }
 
-    .order-summary {
-        position: sticky;
+    .promo-section,
+    .order-summary,
+    .shipping-info {
+        padding: 20px;
+    }
+
+    .promo-form {
+        height: 44px;
     }
 }
 
-@media (max-width: 375px) {
+@media (max-width: 480px) {
     .shopping-cart-page {
-        padding: 12px;
-        background-color: #ffffff;
+        padding: 16px 16px;
     }
 
     .cart-title {
@@ -557,8 +549,82 @@
     }
 
     .cart-item {
-        padding: 12px;
-        gap: 10px;
+        padding: 16px;
+        gap: 12px;
+    }
+
+    .item-image {
+        width: 76px;
+        height: 76px;
+    }
+
+    .item-info {
+        width: calc(100% - 92px);
+    }
+
+    .item-name {
+        font-size: 15px;
+    }
+
+    .item-category {
+        font-size: 13px;
+    }
+
+    .delete-btn {
+        margin-top: -4px;
+    }
+
+    .delete-btn::after {
+        font-size: 13px;
+    }
+
+    .promo-section,
+    .order-summary,
+    .shipping-info {
+        padding: 16px;
+    }
+
+    .promo-title {
+        font-size: 17px;
+    }
+
+    .promo-form {
+        height: 42px;
+        gap: 8px;
+    }
+
+    .promo-input {
+        font-size: 14px;
+    }
+
+    .promo-btn {
+        padding: 0 18px;
+        font-size: 14px;
+    }
+
+    .summary-title {
+        font-size: 19px;
+    }
+
+    .checkout-btn,
+    .continue-shopping-btn {
+        height: 50px;
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 375px) {
+    .shopping-cart-page {
+        padding: 14px 14px;
+    }
+
+    .cart-title {
+        font-size: 22px;
+    }
+
+    .cart-item {
+        padding: 14px;
+        gap: 12px;
     }
 
     .item-image {
@@ -567,90 +633,22 @@
     }
 
     .item-info {
-        width: calc(100% - 82px);
+        width: calc(100% - 86px);
     }
 
-    .item-name {
-        font-size: 14px;
-    }
-
-    .item-category {
-        font-size: 12px;
-    }
-
-    .delete-btn {
-        margin-left: 82px;
-        margin-top: -42px;
-    }
-
-    .delete-btn::after {
-        font-size: 12px;
-    }
-
-    .item-price {
-        font-size: 14px;
-    }
-
-    .item-price::before {
-        font-size: 14px;
-    }
-
-    .item-quantity .qty-btn {
-        width: 28px;
-        height: 28px;
-        font-size: 14px;
-    }
-
-    .item-quantity .qty-value {
-        width: 40px;
-        font-size: 14px;
-    }
-
-    .item-total {
-        font-size: 16px;
-    }
-
-    .item-total::before {
-        font-size: 14px;
-    }
-
-    .promo-section {
-        padding: 12px;
-    }
-
-    .promo-title {
-        font-size: 16px;
-        margin-bottom: 8px;
-    }
-
-    .promo-form {
-        height: 38px;
-        gap: 8px;
+    .promo-section,
+    .order-summary,
+    .shipping-info {
+        padding: 14px;
     }
 
     .promo-input {
-        padding: 6px 12px;
-        font-size: 14px;
+        font-size: 13.5px;
     }
 
     .promo-btn {
-        padding: 6px 16px;
-        font-size: 14px;
-    }
-
-    .promo-hint {
-        font-size: 10px;
-        margin-top: 8px;
-    }
-
-    .order-summary,
-    .shipping-info {
-        padding: 12px;
-    }
-
-    .summary-title {
-        font-size: 18px;
-        margin-bottom: 16px;
+        padding: 0 16px;
+        font-size: 13.5px;
     }
 
     .summary-label,
@@ -660,44 +658,6 @@
 
     .summary-total .summary-label,
     .summary-total .summary-value {
-        font-size: 18px;
-    }
-
-    .checkout-btn {
-        padding: 12px;
-        height: 48px;
-        font-size: 14px;
-        margin-bottom: 16px;
-    }
-
-    .continue-shopping-btn {
-        height: 44px;
-        padding: 12px;
-        font-size: 14px;
-    }
-
-    .shipping-title {
-        font-size: 16px;
-        margin-bottom: 12px;
-    }
-
-    .shipping-item {
-        gap: 12px;
-        margin-bottom: 10px;
-    }
-
-    .shipping-label,
-    .shipping-value {
-        font-size: 12px;
-    }
-
-    .shipping-icon {
-        width: 16px;
-        height: 16px;
-    }
-
-    .promo-message {
-        font-size: 12px;
-        margin-top: 8px;
+        font-size: 17px;
     }
 }
