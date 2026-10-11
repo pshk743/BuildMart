@@ -203,8 +203,6 @@ function updateCartBadge() {
     } else if (badge) {
         badge.remove();
     }
-
-    document.dispatchEvent(new Event('cartUpdated'));
 }
 
 function showAddedNotification(productTitle, quantity) {
