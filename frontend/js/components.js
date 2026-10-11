@@ -12,11 +12,7 @@ async function loadComponent(elementId, componentPath) {
     }
 }
 
-document.addEventListener('DOMContentLoaded', async () => {
-    await loadComponent('header-placeholder', 'components/header.html');
-    await loadComponent('footer-placeholder', 'components/footer.html');
-    
-    if (typeof CartBadgeManager !== 'undefined') {
-        new CartBadgeManager();
-    }
+document.addEventListener('DOMContentLoaded', () => {
+    loadComponent('header-placeholder', 'components/header.html');
+    loadComponent('footer-placeholder', 'components/footer.html');
 });
