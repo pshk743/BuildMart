@@ -1,5 +1,6 @@
 package com.buildingstore.service;
 
+import com.buildingstore.cache.ProductCacheService;
 import com.buildingstore.dto.request.ProductListRequest;
 import com.buildingstore.dto.request.ProductRequest;
 import com.buildingstore.dto.response.ProductListMetaResponse;
@@ -26,43 +27,55 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final CartItemRepository cartItemRepository;
+    private final ProductCacheService productCacheService;
     private final ProductFactory productFactory;
     private final ProductResponseMapper productResponseMapper;
 
     @Transactional(readOnly = true)
     public ProductListResponse list(ProductListRequest request) {
-        Page<ProductEntity> page = productRepository.findAll(
-                ProductSpecificationBuilder.from(request),
-                request.toPageable()
-        );
+        String cacheKey = request.cacheKey();
 
-        return new ProductListResponse(
-                page.getContent().stream().map(productResponseMapper::toProductResponse).toList(),
-                new ProductListMetaResponse(
-                        page.getTotalElements(),
-                        page.getTotalPages(),
-                        request.page(),
-                        request.limit()
-                )
-        );
+        return productCacheService.get(cacheKey).orElseGet(() -> {
+            Page<ProductEntity> page = productRepository.findAll(
+                    ProductSpecificationBuilder.from(request),
+                    request.toPageable()
+            );
+
+            ProductListResponse response = new ProductListResponse(
+                    page.getContent().stream().map(productResponseMapper::toProductResponse).toList(),
+                    new ProductListMetaResponse(
+                            page.getTotalElements(),
+                            page.getTotalPages(),
+                            request.page(),
+                            request.limit()
+                    )
+            );
+            productCacheService.put(cacheKey, response);
+            return response;
+        });
     }
 
     @Transactional(readOnly = true)
     public ProductResponse getById(Long id) {
-        return productResponseMapper.toProductResponse(findProduct(id));
+        ProductEntity product = findProduct(id);
+        return productResponseMapper.toProductResponse(product);
     }
 
     @Transactional
     public ProductResponse create(ProductRequest request) {
-        ProductEntity saved = productRepository.save(productFactory.createProduct(new ProductEntity(), request));
-        log.info("Created product {} — {}", saved.getId(), saved.getTitle());
+        ProductEntity product = productFactory.createProduct(new ProductEntity(), request);
+        ProductEntity saved = productRepository.save(product);
+        log.info("Created product {} вЂ” {}", saved.getId(), saved.getTitle());
+        productCacheService.evictAll();
         return productResponseMapper.toProductResponse(saved);
     }
 
     @Transactional
     public ProductResponse update(Long id, ProductRequest request) {
-        ProductEntity saved = productRepository.save(productFactory.createProduct(findProduct(id), request));
-        log.info("Updated product {} — {}", saved.getId(), saved.getTitle());
+        ProductEntity product = productFactory.createProduct(findProduct(id), request);
+        ProductEntity saved = productRepository.save(product);
+        log.info("Updated product {} вЂ” {}", saved.getId(), saved.getTitle());
+        productCacheService.evictAll();
         return productResponseMapper.toProductResponse(saved);
     }
 
@@ -72,6 +85,7 @@ public class ProductService {
         cartItemRepository.deleteByProductId(product.getId());
         productRepository.delete(product);
         log.info("Deleted product {}", id);
+        productCacheService.evictAll();
     }
 
     private ProductEntity findProduct(Long id) {
