@@ -1,0 +1,6 @@
+.git
+.idea
+**/target
+**/.env
+**/node_modules
+*.md
