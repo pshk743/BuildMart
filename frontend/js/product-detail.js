@@ -3,46 +3,46 @@ let currentImageIndex = 0;
 
 function getProductIdFromURL() {
     const urlParams = new URLSearchParams(window.location.search);
-    return parseInt(urlParams.get('id'));
+    return parseInt(urlParams.get('id'), 10);
 }
 
 async function loadProductData() {
+    const productId = getProductIdFromURL();
+    if (!productId) {
+        window.location.href = 'index.html';
+        return;
+    }
+
     try {
-        const response = await fetch('data/products.json');
-        const products = await response.json();
-        const productId = getProductIdFromURL();
-        
-        currentProduct = products.find(p => p.id === productId);
-        
-        if (currentProduct) {
-            displayProduct(currentProduct);
-        } else {
-            window.location.href = 'index.html';
-        }
+        currentProduct = await Api.apiFetch(`/api/products/${productId}`);
+        displayProduct(currentProduct);
     } catch (error) {
         console.error('Error loading product:', error);
+        window.location.href = 'index.html';
     }
+}
+
+function getProductImages(product) {
+    if (product.images && product.images.length > 0) {
+        return product.images;
+    }
+    const fallback = Api.productImage(product);
+    return fallback ? [fallback, fallback, fallback] : [];
 }
 
 function displayProduct(product) {
     document.getElementById('product-title').textContent = product.title;
     document.getElementById('breadcrumb-product').textContent = product.title;
     document.title = `${product.title} - BuildMart`;
-
-    document.getElementById('product-price').textContent = `$${product.price.toFixed(2)}`;
-
+    document.getElementById('product-price').textContent = `$${Number(product.price).toFixed(2)}`;
     displayRating(product.rating);
-
-    const images = [product.image, product.image, product.image];
-    displayGallery(images, product.alt);
-
-    document.getElementById('product-description').textContent = product.description || 'High-quality building material for your construction needs.';
+    displayGallery(getProductImages(product), product.title);
+    document.getElementById('product-description').textContent =
+        product.description || 'High-quality building material for your construction needs.';
 
     if (product.specifications) {
         displaySpecifications(product.specifications);
     }
-
-    currentProduct.category = product.category;
 
     loadRelatedProducts();
 }
@@ -50,8 +50,8 @@ function displayProduct(product) {
 function displaySpecifications(specs) {
     const specsGrid = document.getElementById('specs-grid');
     specsGrid.innerHTML = '';
-    
-    for (const [label, value] of Object.entries(specs)) {
+
+    Object.entries(specs).forEach(([label, value]) => {
         const specItem = document.createElement('div');
         specItem.className = 'spec-item';
         specItem.innerHTML = `
@@ -59,21 +59,20 @@ function displaySpecifications(specs) {
             <div class="spec-value">${value}</div>
         `;
         specsGrid.appendChild(specItem);
-    }
+    });
 }
 
 function toggleSpecs() {
-    const specsSection = document.querySelector('.specs-section');
-    specsSection.classList.toggle('open');
+    document.querySelector('.specs-section').classList.toggle('open');
 }
 
 function displayRating(rating) {
     const starsContainer = document.getElementById('product-stars');
     starsContainer.innerHTML = '';
-    
+
     const fullStars = Math.floor(rating);
     const hasHalfStar = rating % 1 !== 0;
-    
+
     for (let i = 0; i < fullStars; i++) {
         starsContainer.innerHTML += `
             <svg width="20" height="20" viewBox="0 0 20 20" fill="#FFB800" xmlns="http://www.w3.org/2000/svg">
@@ -81,7 +80,7 @@ function displayRating(rating) {
             </svg>
         `;
     }
-    
+
     if (hasHalfStar) {
         starsContainer.innerHTML += `
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -95,7 +94,7 @@ function displayRating(rating) {
             </svg>
         `;
     }
-    
+
     const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
     for (let i = 0; i < emptyStars; i++) {
         starsContainer.innerHTML += `
@@ -104,18 +103,23 @@ function displayRating(rating) {
             </svg>
         `;
     }
-    
-    document.getElementById('product-rating').textContent = `(${rating.toFixed(1)})`;
+
+    document.getElementById('product-rating').textContent = `(${Number(rating).toFixed(1)})`;
 }
 
 function displayGallery(images, alt) {
     const mainImage = document.getElementById('main-image');
     const thumbnailContainer = document.getElementById('thumbnail-container');
-    
+
+    if (!images.length) {
+        return;
+    }
+
+    currentImageIndex = 0;
     mainImage.src = images[0];
     mainImage.alt = alt;
-    
     thumbnailContainer.innerHTML = '';
+
     images.forEach((img, index) => {
         const thumbnail = document.createElement('div');
         thumbnail.className = `thumbnail ${index === 0 ? 'active' : ''}`;
@@ -126,82 +130,58 @@ function displayGallery(images, alt) {
 }
 
 function selectImage(index) {
-    if (!currentProduct) return;
-    
+    if (!currentProduct) {
+        return;
+    }
+
+    const images = getProductImages(currentProduct);
     currentImageIndex = index;
-    const images = [currentProduct.image, currentProduct.image, currentProduct.image];
-    
     document.getElementById('main-image').src = images[index];
-    
     document.querySelectorAll('.thumbnail').forEach((thumb, i) => {
         thumb.classList.toggle('active', i === index);
     });
 }
 
 function changeImage(direction) {
-    const images = [currentProduct.image, currentProduct.image, currentProduct.image];
+    const images = getProductImages(currentProduct);
     currentImageIndex = (currentImageIndex + direction + images.length) % images.length;
     selectImage(currentImageIndex);
 }
 
 function increaseQuantity() {
     const input = document.getElementById('quantity-input');
-    input.value = parseInt(input.value) + 1;
+    input.value = parseInt(input.value, 10) + 1;
 }
 
 function decreaseQuantity() {
     const input = document.getElementById('quantity-input');
-    if (parseInt(input.value) > 1) {
-        input.value = parseInt(input.value) - 1;
+    if (parseInt(input.value, 10) > 1) {
+        input.value = parseInt(input.value, 10) - 1;
     }
 }
 
-function addToCart() {
-    if (!currentProduct) return;
-    
-    const quantity = parseInt(document.getElementById('quantity-input').value);
-    
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    
-    const existingItem = cart.find(item => item.id === currentProduct.id);
-    
-    if (existingItem) {
-        existingItem.quantity += quantity;
-    } else {
-        cart.push({
-            id: currentProduct.id,
-            title: currentProduct.title,
-            price: currentProduct.price,
-            category: currentProduct.category,
-            image: currentProduct.image,
-            quantity: quantity
+async function addToCart() {
+    if (!currentProduct) {
+        return;
+    }
+    if (!Api.requireAuth(window.location.href)) {
+        return;
+    }
+
+    const quantity = parseInt(document.getElementById('quantity-input').value, 10) || 1;
+
+    try {
+        await Api.apiFetch('/api/cart/items', {
+            method: 'POST',
+            body: JSON.stringify({
+                productId: Number(currentProduct.id),
+                quantity
+            })
         });
-    }
-    
-    localStorage.setItem('cart', JSON.stringify(cart));
-
-    updateCartBadge();
-
-    showAddedNotification(currentProduct.title, quantity);
-}
-
-function updateCartBadge() {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-    
-    let badge = document.querySelector('.cart-badge');
-    const cartBtn = document.querySelector('.cart-btn');
-    
-    if (totalItems > 0) {
-        if (!badge) {
-            badge = document.createElement('span');
-            badge.className = 'cart-badge';
-            cartBtn.style.position = 'relative';
-            cartBtn.appendChild(badge);
-        }
-        badge.textContent = totalItems;
-    } else if (badge) {
-        badge.remove();
+        window.dispatchEvent(new Event('cart:updated'));
+        showAddedNotification(currentProduct.title, quantity);
+    } catch (error) {
+        alert(error.message || 'Failed to add product to cart');
     }
 }
 
@@ -210,7 +190,7 @@ function showAddedNotification(productTitle, quantity) {
     if (existingNotification) {
         existingNotification.remove();
     }
-    
+
     const notification = document.createElement('div');
     notification.className = 'cart-notification';
     notification.innerHTML = `
@@ -220,7 +200,7 @@ function showAddedNotification(productTitle, quantity) {
         <span>Added ${quantity} ${productTitle} to cart</span>
     `;
     document.body.appendChild(notification);
-    
+
     setTimeout(() => notification.classList.add('show'), 10);
     setTimeout(() => {
         notification.classList.remove('show');
@@ -228,43 +208,18 @@ function showAddedNotification(productTitle, quantity) {
     }, 3000);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    loadProductData();
-    updateCartBadge();
-
-    const cartBtn = document.querySelector('.cart-btn');
-    if (cartBtn) {
-        cartBtn.addEventListener('click', () => {
-            window.location.href = 'cart.html';
-        });
-    }
-
-    window.addEventListener('popstate', (event) => {
-        if (event.state && event.state.productId) {
-            loadProductData();
-        }
-    });
-});
-
 async function loadRelatedProducts() {
     try {
-        const response = await fetch('data/products.json');
-        const products = await response.json();
-        
-        console.log('All products:', products);
-        console.log('Current product:', currentProduct);
-
-        let relatedProducts = [];
-        
-        if (currentProduct.id === 2) {
-            relatedProducts = products.filter(p => p.id === 4);
-        } else if (currentProduct.id === 4) {
-            relatedProducts = products.filter(p => p.id === 2);
+        if (!currentProduct || !currentProduct.category) {
+            displayRelatedProducts([]);
+            return;
         }
-        
-        console.log('Final related products:', relatedProducts);
 
-        displayRelatedProducts(relatedProducts);
+        const data = await Api.apiFetch('/api/products?page=1&limit=12');
+        const related = (data.items || [])
+            .filter((item) => item.id !== currentProduct.id && item.category === currentProduct.category)
+            .slice(0, 2);
+        displayRelatedProducts(related);
     } catch (error) {
         console.error('Error loading related products:', error);
     }
@@ -274,34 +229,27 @@ function displayRelatedProducts(products) {
     const grid = document.getElementById('related-products-grid');
     grid.innerHTML = '';
 
-    products.forEach(product => {
+    products.forEach((product) => {
         const card = document.createElement('div');
         card.className = 'related-product-card';
-
-        const stars = generateStarsHTML(product.rating);
-
-        const imageUrl = product.relatedImage || product.image;
+        const imageUrl = Api.productImage(product);
 
         card.innerHTML = `
             <div class="related-product-image">
-                <img src="${imageUrl}" alt="${product.alt || product.title}">
+                <img src="${imageUrl}" alt="${product.title}">
             </div>
             <div class="related-product-info">
                 <h3 class="related-product-title">${product.title}</h3>
                 <div class="related-product-rating">
-                    <div class="related-product-stars">${stars}</div>
-                    <span>(${product.rating.toFixed(1)})</span>
+                    <div class="related-product-stars">${generateStarsHTML(product.rating)}</div>
+                    <span>(${Number(product.rating).toFixed(1)})</span>
                 </div>
-                <div class="related-product-price">$${product.price.toFixed(2)}</div>
+                <div class="related-product-price">$${Number(product.price).toFixed(2)}</div>
             </div>
         `;
 
-        card.addEventListener('click', function() {
-            const newUrl = `product-detail.html?id=${product.id}`;
-            window.history.pushState({productId: product.id}, '', newUrl);
-
-            currentProduct = product;
-            displayProduct(product);
+        card.addEventListener('click', () => {
+            window.location.href = `product-detail.html?id=${product.id}`;
         });
 
         grid.appendChild(card);
@@ -312,9 +260,8 @@ function generateStarsHTML(rating) {
     const fullStars = Math.floor(rating);
     const hasHalfStar = rating % 1 !== 0;
     const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-    
     let starsHTML = '';
-    
+
     for (let i = 0; i < fullStars; i++) {
         starsHTML += `
             <svg width="16" height="16" viewBox="0 0 20 20" fill="#FFB800" xmlns="http://www.w3.org/2000/svg">
@@ -322,7 +269,7 @@ function generateStarsHTML(rating) {
             </svg>
         `;
     }
-    
+
     if (hasHalfStar) {
         starsHTML += `
             <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -336,7 +283,7 @@ function generateStarsHTML(rating) {
             </svg>
         `;
     }
-    
+
     for (let i = 0; i < emptyStars; i++) {
         starsHTML += `
             <svg width="16" height="16" viewBox="0 0 20 20" fill="#E5E9F0" xmlns="http://www.w3.org/2000/svg">
@@ -344,6 +291,10 @@ function generateStarsHTML(rating) {
             </svg>
         `;
     }
-    
+
     return starsHTML;
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadProductData();
+});

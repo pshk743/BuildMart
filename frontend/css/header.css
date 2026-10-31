@@ -113,6 +113,31 @@
     color: #9ca3af;
 }
 
+.auth-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 50%;
+}
+
+.auth-btn svg {
+    width: 28px;
+    height: 28px;
+    display: block;
+}
+
+.auth-btn:hover {
+    opacity: 0.88;
+    transform: scale(1.05);
+}
+
 .cart-btn {
     background: none;
     border: none;

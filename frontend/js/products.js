@@ -3,112 +3,136 @@ class ProductRenderer {
         this.productsGrid = productsGrid;
         this.template = document.getElementById(templateId);
         this.products = [];
+        this.meta = null;
+        this.maxPrice = 400;
+        this.requestId = 0;
     }
 
-    async loadProducts(jsonUrl) {
-        try {
-            const response = await fetch(jsonUrl);
-            const data = await response.json();
-            this.products = Array.isArray(data) ? data : (data.products || []);
-            return this.products;
-        } catch (error) {
-            return [];
+    async loadCatalog(filters = {}) {
+        const requestId = ++this.requestId;
+        const params = new URLSearchParams();
+        params.set('page', String(filters.page || 1));
+        params.set('limit', String(filters.limit || 12));
+
+        if (filters.search) {
+            params.set('search', filters.search);
         }
+        if (filters.minPrice != null) {
+            params.set('min_price', String(filters.minPrice));
+        }
+        if (filters.maxPrice != null) {
+            params.set('max_price', String(filters.maxPrice));
+        }
+        if (filters.minRating) {
+            params.set('min_rating', String(filters.minRating));
+        }
+        if (filters.sortBy) {
+            params.set('sort_by', filters.sortBy);
+        }
+        if (filters.order) {
+            params.set('order', filters.order);
+        }
+
+        try {
+            const data = await Api.apiFetch(`/api/products?${params.toString()}`);
+            if (requestId !== this.requestId) {
+                return null;
+            }
+
+            this.products = data.items || [];
+            this.meta = data.meta || null;
+            this.renderProducts(this.products);
+            this.updateEmptyState(this.products.length === 0);
+            return data;
+        } catch (error) {
+            if (requestId !== this.requestId) {
+                return null;
+            }
+            this.products = [];
+            this.meta = null;
+            this.renderProducts([]);
+            this.updateEmptyState(true);
+            console.error('Failed to load products:', error);
+            return null;
+        }
+    }
+
+    async loadMaxPrice() {
+        try {
+            const data = await Api.apiFetch('/api/products?page=1&limit=100&sort_by=price&order=desc');
+            const prices = (data.items || []).map((item) => Number(item.price));
+            this.maxPrice = prices.length > 0 ? Math.max(...prices) : 400;
+        } catch (error) {
+            this.maxPrice = 400;
+        }
+        return this.maxPrice;
+    }
+
+    getMaxPrice() {
+        return this.maxPrice;
     }
 
     renderProducts(products = this.products) {
         this.productsGrid.innerHTML = '';
-        products.forEach(product => {
-            const card = this.createProductCard(product);
-            this.productsGrid.appendChild(card);
+        products.forEach((product) => {
+            this.productsGrid.appendChild(this.createProductCard(product));
         });
         this.updateProductCount();
-    }
-
-    getMaxPrice() {
-        if (this.products.length === 0) return 400;
-
-        const maxPrice = Math.max(...this.products.map(p => p.price));
-        return maxPrice;
     }
 
     createProductCard(product) {
         const card = this.template.content.cloneNode(true);
         const productCard = card.querySelector('.product-card');
+        const imageUrl = Api.productImage(product);
 
         productCard.dataset.rating = product.rating;
         productCard.dataset.productId = product.id;
 
         const img = card.querySelector('img');
-        img.src = product.image;
-        img.alt = product.alt || product.title;
+        img.src = imageUrl;
+        img.alt = product.title;
 
-        const productImage = card.querySelector('.product-image');
-        productImage.style.cursor = 'pointer';
-        productImage.addEventListener('click', () => {
+        const openDetail = () => {
             window.location.href = `product-detail.html?id=${product.id}`;
-        });
+        };
+
+        card.querySelector('.product-image').addEventListener('click', openDetail);
         const productTitle = card.querySelector('.product-title');
         productTitle.textContent = product.title;
-        productTitle.style.cursor = 'pointer';
-        productTitle.addEventListener('click', () => {
-            window.location.href = `product-detail.html?id=${product.id}`;
-        });
+        productTitle.addEventListener('click', openDetail);
 
-        card.querySelector('.product-price').textContent = `$${product.price.toFixed(2)}`;
-        card.querySelector('.product-category').textContent = product.category;
+        card.querySelector('.product-price').textContent = `$${Number(product.price).toFixed(2)}`;
+        card.querySelector('.product-category').textContent = product.category || '';
         card.querySelector('.rating-count').textContent = `(${product.rating})`;
-
         this.renderStars(card.querySelector('.stars'), product.rating);
 
-        const addToCartBtn = card.querySelector('.add-to-cart-btn');
-        addToCartBtn.addEventListener('click', () => {
+        card.querySelector('.add-to-cart-btn').addEventListener('click', () => {
             this.addToCart(product);
         });
 
         return card;
     }
 
-    addToCart(product) {
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        
-        const existingItem = cart.find(item => item.id === product.id);
-        
-        if (existingItem) {
-            existingItem.quantity += 1;
-        } else {
-            cart.push({
-                id: product.id,
-                title: product.title,
-                price: product.price,
-                category: product.category,
-                image: product.image,
-                quantity: 1
-            });
+    async addToCart(product) {
+        if (!Api.requireAuth(window.location.href)) {
+            return;
         }
-        
-        localStorage.setItem('cart', JSON.stringify(cart));
-        this.updateCartBadge();
-        this.showAddedNotification(product.title);
-    }
 
-    updateCartBadge() {
-        const cart = JSON.parse(localStorage.getItem('cart')) || [];
-        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-        
-        let badge = document.querySelector('.cart-badge');
-        const cartBtn = document.querySelector('.cart-btn');
-        
-        if (totalItems > 0) {
-            if (!badge) {
-                badge = document.createElement('span');
-                badge.className = 'cart-badge';
-                cartBtn.style.position = 'relative';
-                cartBtn.appendChild(badge);
-            }
-            badge.textContent = totalItems;
-        } else if (badge) {
-            badge.remove();
+        const productId = Number(product && product.id);
+        if (!productId) {
+            alert('Product id is missing');
+            return;
+        }
+
+        try {
+            await Api.apiFetch('/api/cart/items', {
+                method: 'POST',
+                body: JSON.stringify({ productId, quantity: 1 })
+            });
+            window.dispatchEvent(new Event('cart:updated'));
+            this.showAddedNotification(product.title);
+        } catch (error) {
+            alert(error.message || 'Failed to add product to cart');
         }
     }
 
@@ -122,7 +146,7 @@ class ProductRenderer {
             <span>Added ${productTitle} to cart</span>
         `;
         document.body.appendChild(notification);
-        
+
         setTimeout(() => notification.classList.add('show'), 10);
         setTimeout(() => {
             notification.classList.remove('show');
@@ -136,78 +160,34 @@ class ProductRenderer {
         const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
 
         let starsHTML = '';
-
         for (let i = 0; i < fullStars; i++) {
             starsHTML += '<span class="star filled">★</span>';
         }
-
         if (hasHalfStar) {
             starsHTML += '<span class="star half-filled">★</span>';
         }
-
         for (let i = 0; i < emptyStars; i++) {
             starsHTML += '<span class="star">★</span>';
         }
-
         starsContainer.innerHTML = starsHTML;
     }
 
     updateProductCount() {
-        const count = this.productsGrid.children.length;
         const countElement = document.querySelector('.products-count');
-        if (countElement) {
-            countElement.textContent = `Showing ${count} products`;
+        if (!countElement) {
+            return;
         }
+        const total = this.meta ? this.meta.total_items : this.productsGrid.children.length;
+        countElement.textContent = `Showing ${total} products`;
     }
 
-    filterProducts(filters) {
-        const filtered = this.products.filter(product => {
-            const matchesSearch = !filters.search ||
-                product.title.toLowerCase().includes(filters.search.toLowerCase());
-            const matchesPrice = product.price >= filters.minPrice &&
-                product.price <= filters.maxPrice;
-            const matchesRating = filters.minRating === 0 ||
-                product.rating >= filters.minRating;
-
-            return matchesSearch && matchesPrice && matchesRating;
-        });
-
-        this.renderProducts(filtered);
-
+    updateEmptyState(isEmpty) {
         const noProductsMessage = document.getElementById('noProductsMessage');
-        const productsGrid = document.querySelector('.products-grid');
-
-        if (filtered.length === 0) {
-            noProductsMessage.style.display = 'block';
-            productsGrid.style.display = 'none';
-        } else {
-            noProductsMessage.style.display = 'none';
-            productsGrid.style.display = 'grid';
+        if (!noProductsMessage) {
+            return;
         }
-
-        return filtered;
-    }
-
-    sortProducts(sortBy) {
-        const sorted = [...this.products];
-
-        switch(sortBy) {
-            case 'Name (A-Z)':
-                sorted.sort((a, b) => a.title.localeCompare(b.title));
-                break;
-            case 'Price (Low to High)':
-                sorted.sort((a, b) => a.price - b.price);
-                break;
-            case 'Price (High to Low)':
-                sorted.sort((a, b) => b.price - a.price);
-                break;
-            case 'Rating':
-                sorted.sort((a, b) => b.rating - a.rating);
-                break;
-        }
-
-        this.renderProducts(sorted);
-        return sorted;
+        noProductsMessage.style.display = isEmpty ? 'block' : 'none';
+        this.productsGrid.style.display = isEmpty ? 'none' : 'grid';
     }
 }
 
@@ -216,15 +196,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.querySelector('.products-grid'),
         'product-card-template'
     );
-
-    await renderer.loadProducts('data/products.json');
-    renderer.renderProducts();
-    renderer.updateCartBadge();
-
-    const cartBtn = document.querySelector('.cart-btn');
-    cartBtn.addEventListener('click', () => {
-        window.location.href = 'cart.html';
-    });
-
     window.productRenderer = renderer;
+
+    await renderer.loadMaxPrice();
+    window.dispatchEvent(new Event('catalog:ready'));
 });
