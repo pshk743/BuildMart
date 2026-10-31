@@ -5,21 +5,30 @@ class CartBadgeManager {
 
     init() {
         this.updateBadge();
-
-        window.addEventListener('storage', () => {
-            this.updateBadge();
-        });
+        window.addEventListener('cart:updated', () => this.updateBadge());
+        window.addEventListener('auth:changed', () => this.updateBadge());
+        window.addEventListener('header:ready', () => this.updateBadge());
     }
 
-    updateBadge() {
-        const cart = JSON.parse(localStorage.getItem('cart')) || [];
-        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-        
-        let badge = document.querySelector('.cart-badge');
+    async updateBadge() {
         const cartBtn = document.querySelector('.cart-btn');
-        
-        if (!cartBtn) return;
-        
+        if (!cartBtn) {
+            return;
+        }
+
+        let totalItems = 0;
+
+        if (Api.isLoggedIn()) {
+            try {
+                const cart = await Api.apiFetch('/api/cart');
+                totalItems = (cart.items || []).reduce((sum, item) => sum + Number(item.quantity || 0), 0);
+            } catch (error) {
+                console.error('Failed to load cart badge:', error);
+                totalItems = 0;
+            }
+        }
+
+        let badge = document.querySelector('.cart-badge');
         if (totalItems > 0) {
             if (!badge) {
                 badge = document.createElement('span');
@@ -27,7 +36,7 @@ class CartBadgeManager {
                 cartBtn.style.position = 'relative';
                 cartBtn.appendChild(badge);
             }
-            badge.textContent = totalItems;
+            badge.textContent = String(totalItems);
         } else if (badge) {
             badge.remove();
         }
@@ -36,11 +45,4 @@ class CartBadgeManager {
 
 document.addEventListener('DOMContentLoaded', () => {
     new CartBadgeManager();
-
-    const cartBtn = document.querySelector('.cart-btn');
-    if (cartBtn) {
-        cartBtn.addEventListener('click', () => {
-            window.location.href = 'cart.html';
-        });
-    }
 });

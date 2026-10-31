@@ -1,92 +1,68 @@
 class CartManager {
     constructor() {
-        this.cart = this.loadCart();
-        this.products = [];
-        this.promoCode = null;
-        this.discount = 0;
+        this.cart = null;
         this.template = document.getElementById('cart-item-template');
     }
 
-    async loadProducts() {
+    async loadCart() {
+        if (!Api.requireAuth('cart.html')) {
+            return;
+        }
+
         try {
-            const response = await fetch('data/products.json');
-            this.products = await response.json();
+            this.cart = await Api.apiFetch('/api/cart');
+            this.render();
+            window.dispatchEvent(new Event('cart:updated'));
         } catch (error) {
-            console.error('Error loading products:', error);
+            console.error('Error loading cart:', error);
+            alert(error.message || 'Failed to load cart');
         }
     }
 
-    loadCart() {
-        return JSON.parse(localStorage.getItem('cart')) || [];
-    }
+    async updateQuantity(itemId, newQuantity) {
+        if (newQuantity <= 0) {
+            await this.removeItem(itemId);
+            return;
+        }
 
-    saveCart() {
-        localStorage.setItem('cart', JSON.stringify(this.cart));
-    }
-
-    getProductById(id) {
-        return this.products.find(p => p.id === id);
-    }
-
-    updateQuantity(productId, newQuantity) {
-        const item = this.cart.find(item => item.id === productId);
-        if (item) {
-            if (newQuantity <= 0) {
-                const itemElement = document.querySelector(`[data-product-id="${productId}"]`);
-                if (itemElement) {
-                    itemElement.style.transition = 'all 0.3s ease-out';
-                    itemElement.style.opacity = '0';
-                    itemElement.style.transform = 'translateX(-20px)';
-                    setTimeout(() => {
-                        this.removeItem(productId);
-                    }, 300);
-                } else {
-                    this.removeItem(productId);
-                }
-            } else {
-                item.quantity = newQuantity;
-                this.saveCart();
-                this.render();
-            }
+        try {
+            this.cart = await Api.apiFetch(`/api/cart/items/${itemId}`, {
+                method: 'PATCH',
+                body: JSON.stringify({ quantity: newQuantity })
+            });
+            this.render();
+            window.dispatchEvent(new Event('cart:updated'));
+        } catch (error) {
+            alert(error.message || 'Failed to update quantity');
+            await this.loadCart();
         }
     }
 
-    removeItem(productId) {
-        this.cart = this.cart.filter(item => item.id !== productId);
-        this.saveCart();
-        this.render();
-    }
-
-    calculateTotals() {
-        const subtotal = this.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        const discountAmount = subtotal * this.discount;
-        const subtotalAfterDiscount = subtotal - discountAmount;
-        const tax = subtotalAfterDiscount * 0.08;
-        const total = subtotalAfterDiscount + tax;
-        
-        return { subtotal, discountAmount, tax, total };
-    }
-
-    applyPromoCode(code) {
-        if (this.promoCode) {
-            return false;
+    async removeItem(itemId) {
+        try {
+            await Api.apiFetch(`/api/cart/items/${itemId}`, { method: 'DELETE' });
+            await this.loadCart();
+        } catch (error) {
+            alert(error.message || 'Failed to remove item');
         }
+    }
 
-        const validCodes = {
-            'SAVE10': 0.10
-        };
-
-        const upperCode = code.trim().toUpperCase();
-        
-        if (validCodes[upperCode]) {
-            this.promoCode = upperCode;
-            this.discount = validCodes[upperCode];
-            this.updateTotals();
-            this.showPromoMessage(`✓ Promo code applied! You saved ${(this.discount * 100).toFixed(0)}%`, 'success');
+    async applyPromoCode(code) {
+        try {
+            this.cart = await Api.apiFetch('/api/cart/apply-promo', {
+                method: 'POST',
+                body: JSON.stringify({ code })
+            });
+            this.render();
+            this.showPromoMessage(
+                `✓ Promo code applied! You saved ${this.cart.discountPercentage}%`,
+                'success'
+            );
             this.hidePromoHint();
             return true;
-        } else {
+        } catch (error) {
             this.showPromoHint();
+            this.showPromoMessage(error.message || 'Invalid promo code', 'error');
             return false;
         }
     }
@@ -97,10 +73,7 @@ class CartManager {
             hint = document.createElement('p');
             hint.className = 'promo-hint';
             hint.textContent = 'Try code: SAVE10 for 10% off';
-            
-            const promoSection = document.querySelector('.promo-section');
-            promoSection.appendChild(hint);
-            
+            document.querySelector('.promo-section').appendChild(hint);
             setTimeout(() => {
                 hint.style.opacity = '1';
             }, 10);
@@ -111,37 +84,40 @@ class CartManager {
         const hint = document.querySelector('.promo-hint');
         if (hint) {
             hint.style.opacity = '0';
-            setTimeout(() => {
-                hint.remove();
-            }, 300);
+            setTimeout(() => hint.remove(), 300);
         }
     }
 
     showPromoMessage(message, type) {
-        const existingMessage = document.querySelector('.promo-message');
-        if (existingMessage) {
-            existingMessage.remove();
-        }
+        this.clearPromoMessage();
 
         const messageDiv = document.createElement('div');
         messageDiv.className = `promo-message promo-message-${type}`;
         messageDiv.textContent = message;
-        
+        messageDiv.style.color = type === 'error' ? '#dc2626' : '#15803d';
+
         const promoForm = document.querySelector('.promo-form');
         promoForm.parentNode.insertBefore(messageDiv, promoForm.nextSibling);
-        
-        setTimeout(() => {
-            messageDiv.classList.add('show');
-        }, 10);
+        setTimeout(() => messageDiv.classList.add('show'), 10);
+    }
+
+    clearPromoMessage() {
+        const existingMessage = document.querySelector('.promo-message');
+        if (existingMessage) {
+            existingMessage.remove();
+        }
     }
 
     render() {
         const cartItemsContainer = document.querySelector('.cart-items');
         const cartTitle = document.querySelector('.cart-title');
         const cartContent = document.querySelector('.cart-content');
+        const items = (this.cart && this.cart.items) || [];
 
-        if (this.cart.length === 0) {
-            if (cartTitle) cartTitle.style.display = 'none';
+        if (items.length === 0) {
+            if (cartTitle) {
+                cartTitle.style.display = 'none';
+            }
             cartContent.innerHTML = `
                 <div style="text-align: center; padding: 20px 20px 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; grid-column: 1 / -1;">
                     <h1 style="font-size: 30px; font-weight: 700; color: #101828; margin: 0 0 12px 0; line-height: 36px;">Your Cart is Empty</h1>
@@ -154,144 +130,109 @@ class CartManager {
                     </button>
                 </div>
             `;
-            this.updateCartBadge();
             return;
         }
 
-        cartItemsContainer.innerHTML = '';
-        
-        this.cart.forEach(item => {
-            const itemElement = this.createCartItemElement(item);
-            cartItemsContainer.appendChild(itemElement);
-        });
+        if (cartTitle) {
+            cartTitle.style.display = '';
+        }
 
+        cartItemsContainer.innerHTML = '';
+        items.forEach((item) => {
+            cartItemsContainer.appendChild(this.createCartItemElement(item));
+        });
         this.updateTotals();
-        this.updateCartBadge();
     }
 
     createCartItemElement(item) {
         const clone = this.template.content.cloneNode(true);
         const cartItem = clone.querySelector('.cart-item');
-        
-        cartItem.dataset.productId = item.id;
-        
-        const itemTotal = (item.price * item.quantity).toFixed(2);
-        
-        clone.querySelector('.item-image img').src = item.image;
+        cartItem.dataset.itemId = item.id;
+
+        const itemTotal = Number(item.lineTotal ?? (Number(item.price) * Number(item.quantity))).toFixed(2);
+
+        clone.querySelector('.item-image img').src = item.image || '';
         clone.querySelector('.item-image img').alt = item.title;
         clone.querySelector('.item-name').textContent = item.title;
-        clone.querySelector('.item-category').textContent = item.category;
-        clone.querySelector('.item-price').textContent = `$${item.price.toFixed(2)}`;
+        clone.querySelector('.item-category').textContent = '';
+        clone.querySelector('.item-price').textContent = `$${Number(item.price).toFixed(2)}`;
         clone.querySelector('.qty-value').textContent = item.quantity;
         clone.querySelector('.item-total').textContent = `$${itemTotal}`;
 
-        const decreaseBtn = clone.querySelector('.qty-decrease');
-        const increaseBtn = clone.querySelector('.qty-increase');
-        const deleteBtn = clone.querySelector('.delete-btn');
-
-        decreaseBtn.addEventListener('click', () => {
+        clone.querySelector('.qty-decrease').addEventListener('click', () => {
             this.updateQuantity(item.id, item.quantity - 1);
         });
-
-        increaseBtn.addEventListener('click', () => {
+        clone.querySelector('.qty-increase').addEventListener('click', () => {
             this.updateQuantity(item.id, item.quantity + 1);
         });
-
-        deleteBtn.addEventListener('click', () => {
+        clone.querySelector('.delete-btn').addEventListener('click', () => {
             cartItem.style.transition = 'all 0.3s ease-out';
             cartItem.style.opacity = '0';
             cartItem.style.transform = 'translateX(-20px)';
-            
-            setTimeout(() => {
-                this.removeItem(item.id);
-            }, 300);
+            setTimeout(() => this.removeItem(item.id), 300);
         });
 
         return clone;
     }
 
     updateTotals() {
-        const { subtotal, discountAmount, tax, total } = this.calculateTotals();
-        
         const summaryContainer = document.querySelector('.order-summary');
-        
+        if (!summaryContainer || !this.cart) {
+            return;
+        }
+
+        const subtotal = Number(this.cart.subtotal || 0);
+        const discountAmount = Number(this.cart.discountAmount || 0);
+        const total = Number(this.cart.total || 0);
+        const discountPercentage = this.cart.discountPercentage || 0;
+        const hasDiscount = discountAmount > 0;
+
         let summaryHTML = '<h2 class="summary-title">Order Summary</h2>';
-        
         summaryHTML += `
             <div class="summary-row">
                 <span class="summary-label">Subtotal</span>
                 <span class="summary-value">$${subtotal.toFixed(2)}</span>
             </div>
-            
-            <div class="summary-row">
-                <span class="summary-label">Tax (8%)</span>
-                <span class="summary-value">$${tax.toFixed(2)}</span>
-            </div>
         `;
-        
-        if (this.discount > 0) {
+
+        if (hasDiscount) {
             summaryHTML += `
                 <div class="summary-row summary-discount">
-                    <span class="summary-label">Discount (10%)</span>
+                    <span class="summary-label">Discount (${discountPercentage}%)</span>
                     <span class="summary-value">-$${discountAmount.toFixed(2)}</span>
                 </div>
             `;
         }
-        
+
         summaryHTML += `
             <div class="summary-divider"></div>
-            
             <div class="summary-row summary-total">
                 <span class="summary-label">Total</span>
                 <span class="summary-value">$${total.toFixed(2)}</span>
             </div>
-
             <button class="checkout-btn">Proceed to Checkout →</button>
             <button class="continue-shopping-btn">Continue Shopping</button>
         `;
-        
+
         summaryContainer.innerHTML = summaryHTML;
-        
-        const continueShoppingBtn = summaryContainer.querySelector('.continue-shopping-btn');
-        continueShoppingBtn.addEventListener('click', () => {
+        summaryContainer.querySelector('.continue-shopping-btn').addEventListener('click', () => {
             window.location.href = 'index.html';
         });
-    }
-
-    updateCartBadge() {
-        const totalItems = this.cart.reduce((sum, item) => sum + item.quantity, 0);
-        
-        let badge = document.querySelector('.cart-badge');
-        const cartBtn = document.querySelector('.cart-btn');
-        
-        if (totalItems > 0) {
-            if (!badge) {
-                badge = document.createElement('span');
-                badge.className = 'cart-badge';
-                cartBtn.style.position = 'relative';
-                cartBtn.appendChild(badge);
-            }
-            badge.textContent = totalItems;
-        } else if (badge) {
-            badge.remove();
-        }
     }
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
     const cartManager = new CartManager();
-    await cartManager.loadProducts();
-    cartManager.render();
+    await cartManager.loadCart();
 
     const promoBtn = document.querySelector('.promo-btn');
     const promoInput = document.querySelector('.promo-input');
-    
+
     if (promoBtn && promoInput) {
         promoInput.addEventListener('input', (e) => {
+            cartManager.clearPromoMessage();
             const code = e.target.value.trim().toUpperCase();
-            const validCodes = ['SAVE10'];
-            
-            if (code.length > 0 && !validCodes.includes(code)) {
+            if (code.length > 0 && code !== 'SAVE10') {
                 cartManager.showPromoHint();
             } else {
                 cartManager.hidePromoHint();
@@ -309,13 +250,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (e.key === 'Enter') {
                 promoBtn.click();
             }
-        });
-    }
-
-    const cartBtn = document.querySelector('.cart-btn');
-    if (cartBtn) {
-        cartBtn.addEventListener('click', () => {
-            window.location.href = 'cart.html';
         });
     }
 });
