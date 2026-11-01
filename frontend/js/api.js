@@ -58,7 +58,7 @@ window.Api = (() => {
             headers
         });
 
-        if (response.status === 401) {
+        if (response.status === 401 || (response.status === 403 && token && !path.startsWith('/api/auth/'))) {
             logout();
             if (!path.startsWith('/api/auth/')) {
                 requireAuth(window.location.href);
