@@ -36,13 +36,10 @@ window.Api = (() => {
     }
 
     function productImage(product) {
-        if (!product) {
+        if (!product || !Array.isArray(product.images) || product.images.length === 0) {
             return '';
         }
-        if (Array.isArray(product.images) && product.images.length > 0) {
-            return product.images[0];
-        }
-        return product.image || '';
+        return product.images[0];
     }
 
     async function apiFetch(path, options = {}) {
@@ -91,7 +88,6 @@ window.Api = (() => {
     }
 
     return {
-        getToken,
         setToken,
         isLoggedIn,
         logout,

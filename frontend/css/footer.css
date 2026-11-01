@@ -13,7 +13,7 @@
 
 .footer-content {
     display: grid;
-    grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+    grid-template-columns: 1.5fr 1fr;
     gap: 32px;
     padding-bottom: 32px;
 }
@@ -30,23 +30,6 @@
     line-height: 1.6;
     margin-bottom: 16px;
     font-size: 14px;
-}
-
-.social-links {
-    display: flex;
-    gap: 12px;
-}
-
-.social-link {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #d1d5dc;
-    transition: color 0.3s ease;
-}
-
-.social-link:hover {
-    color: #F54900;
 }
 
 .footer-links {
@@ -66,56 +49,6 @@
 
 .footer-links a:hover {
     color: #F54900;
-}
-
-.newsletter-section .newsletter-description {
-    color: #d1d5dc;
-    font-size: 14px;
-    line-height: 1.5;
-    margin-bottom: 16px;
-}
-
-.newsletter-form {
-    display: flex;
-    gap: 8px;
-}
-
-.newsletter-input {
-    flex: 1;
-    background: #1e2939;
-    border: 1px solid #364153;
-    border-radius: 10px;
-    padding: 8px 12px;
-    height: 38px;
-    color: #d1d5dc;
-    font-size: 14px;
-}
-
-.newsletter-input::placeholder {
-    color: #d1d5dc;
-    opacity: 0.5;
-}
-
-.newsletter-input:focus {
-    border-color: #F54900;
-    outline: none;
-}
-
-.newsletter-btn {
-    width: 48px;
-    background-color: #F54900;
-    border: none;
-    border-radius: 10px;
-    color: #ffffff;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.newsletter-btn:hover {
-    background: #E04100;
 }
 
 .footer-contact {
@@ -173,32 +106,6 @@
         gap: 32px 24px;
         padding-left: 0;
         padding-right: 0;
-    }
-
-    .footer-section:nth-child(1),
-    .footer-section:nth-child(2) {
-        grid-column: 1;
-    }
-
-    .footer-section:nth-child(1) {
-        grid-row: 1;
-    }
-
-    .footer-section:nth-child(2) {
-        grid-row: 2;
-    }
-
-    .footer-section:nth-child(3),
-    .footer-section:nth-child(4) {
-        grid-column: 2;
-    }
-
-    .footer-section:nth-child(3) {
-        grid-row: 1;
-    }
-
-    .footer-section:nth-child(4) {
-        grid-row: 2;
     }
 
     .footer-contact {
