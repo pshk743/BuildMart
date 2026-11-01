@@ -58,7 +58,9 @@ window.Api = (() => {
             headers
         });
 
-        if (response.status === 401) {
+        // Spring often returns 403 (not 401) for anonymous access to protected routes,
+        // and also when a stale JWT is present but no longer valid.
+        if (response.status === 401 || (response.status === 403 && token && !path.startsWith('/api/auth/'))) {
             logout();
             if (!path.startsWith('/api/auth/')) {
                 requireAuth(window.location.href);
