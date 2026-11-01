@@ -59,9 +59,9 @@ class ProductRenderer {
 
     async loadMaxPrice() {
         try {
-            const data = await Api.apiFetch('/api/products?page=1&limit=100&sort_by=price&order=desc');
-            const prices = (data.items || []).map((item) => Number(item.price));
-            this.maxPrice = prices.length > 0 ? Math.max(...prices) : 400;
+            const data = await Api.apiFetch('/api/products?page=1&limit=1&sort_by=price&order=desc');
+            const items = data.items || [];
+            this.maxPrice = items.length > 0 ? Number(items[0].price) : 400;
         } catch (error) {
             this.maxPrice = 400;
         }
