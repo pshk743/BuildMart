@@ -12,7 +12,6 @@ public record ProductSeedData(
         BigDecimal price,
         Double rating,
         String category,
-        String image,
         List<String> images,
         Map<String, String> specifications
 ) {
