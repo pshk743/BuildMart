@@ -22,3 +22,6 @@ Thumbs.db
 .env.local
 
 target/
+
+IMPLEMENTATION_STEPS.md
+
