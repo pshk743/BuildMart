@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - BuildMart</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/mobile-menu.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/cart-badge.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div id="header-placeholder"></div>
+
+<main class="auth-page">
+    <div class="auth-card">
+        <h1 class="auth-title">Create account</h1>
+        <p class="auth-subtitle">Register to save your cart and use promo codes.</p>
+        <form id="auth-form" class="auth-form" data-mode="register">
+            <label class="auth-label" for="email">Email</label>
+            <input class="auth-input" id="email" type="email" required placeholder="you@example.com">
+
+            <label class="auth-label" for="password">Password</label>
+            <input class="auth-input" id="password" type="password" required minlength="8" placeholder="At least 8 characters">
+
+            <button class="auth-submit" type="submit">Sign up</button>
+            <div id="auth-error" class="auth-error"></div>
+        </form>
+        <p class="auth-footer">Already have an account? <a id="login-link" href="login.html">Sign in</a></p>
+    </div>
+</main>
+
+<div id="footer-placeholder"></div>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/components.js"></script>
+<script src="js/mobile-menu.js"></script>
+<script src="js/cart-badge.js"></script>
+<script src="js/auth.js"></script>
+<script>
+    const params = new URLSearchParams(window.location.search);
+    const next = params.get('next');
+    if (next) {
+        document.getElementById('login-link').href = `login.html?next=${encodeURIComponent(next)}`;
+    }
+</script>
+</body>
+</html>
